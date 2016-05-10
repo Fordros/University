@@ -47,8 +47,8 @@ public class StudentDaoImpl extends AbstractJDBCDao<Student, Integer> {
 
     @Override
     public Student create() throws DaoException {
-        Student s = new Student();
-        return persist(s);
+        Student student = new Student();
+        return persist(student);
     }
 
     public StudentDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {

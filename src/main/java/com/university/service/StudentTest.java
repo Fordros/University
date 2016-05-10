@@ -6,6 +6,7 @@ import com.university.domain.Group;
 import com.university.domain.Student;
 import com.university.exception.DaoException;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,18 +18,13 @@ import java.util.List;
 public class StudentTest {
 
     public static void main(String[] args) throws DaoException, SQLException {
-        DaoFactory<Connection> factory = new DaoFactoryImpl();
-        Connection connection;
-        connection = factory.getConnection();
-        //connection.setAutoCommit(false);
-
-        List<Student> students =  factory.getDao(connection, Student.class).getAll();
+    	DaoFactory factory = new DaoFactoryImpl();
+        List<Student> students =  factory.getDao(Student.class).getAll();
         System.out.println(students);
+        Group group =  (Group) factory.getDao(Group.class).getByPK(3);
+        System.out.println(group);
 
-/*        List<Group> groups =  factory.getDao(connection, Group.class).getAll();
-        System.out.println(groups);
-
-        Student student = new Student();
+        /* Student student = new Student();
         student.setFirstName("ROST");
         student.setLastName("Ivashchenko");
         student.setContactInformation("KREMEN");
@@ -41,8 +37,6 @@ public class StudentTest {
         students =  factory.getDao(connection, Student.class).getAll();
         System.out.println(students);*/
 
-        //connection.rollback();
-        connection.close();
     }
 
 }

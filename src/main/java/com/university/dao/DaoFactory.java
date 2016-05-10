@@ -14,5 +14,5 @@ public interface DaoFactory<T> {
     public T getConnection() throws DaoException;
 
     /** Возвращает объект для управления персистентным состоянием объекта */
-    public GenericDao getDao(T t, Class dtoClass) throws DaoException;
+    public GenericDao getDao(Class dtoClass) throws DaoException;
 }

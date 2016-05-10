@@ -44,8 +44,8 @@ public class GroupDaoImpl extends AbstractJDBCDao<Group, Integer> {
 
     @Override
     public Group create() throws DaoException {
-        Group g = new Group();
-        return persist(g);
+        Group group = new Group();
+        return persist(group);
     }
 
     public GroupDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {

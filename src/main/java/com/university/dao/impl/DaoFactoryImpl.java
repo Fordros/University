@@ -19,19 +19,21 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
     private String driver = "org.postgresql.Driver";//Имя драйвера
     private Map<Class, DaoCreator> creators;
 
+
     public Connection getConnection() throws DaoException {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Connection failed ",e);
         }
         return  connection;
     }
 
     @Override
-    public GenericDao getDao(Connection connection, Class dtoClass) throws DaoException {
+    public GenericDao getDao(Class dtoClass) throws DaoException {
         DaoCreator creator = creators.get(dtoClass);
+        Connection connection = getConnection();
         if (creator == null) {
             throw new DaoException("Dao object for " + dtoClass + " not found.");
         }
