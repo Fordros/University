@@ -13,24 +13,13 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public abstract class GenericDaoTest<T> {
 
-    /**
-     * Класс тестируемого дао объекта
-     */
+
     protected Class daoClass;
 
-    /**
-     * Экземпляр доменного объекта, которому не соответствует запись в системе хранения
-     */
     protected Identified notPersistedDto;
 
-    /**
-     * Экземпляр тестируемого дао объекта
-     */
     public abstract GenericDao dao();
 
-    /**
-     * Контекст взаимодействия с системой хранения данных
-     */
     public abstract T context();
 
     @Test

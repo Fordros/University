@@ -3,16 +3,14 @@ package com.university.dao;
 
 import com.university.exception.DaoException;
 
-/** Фабрика объектов для работы с базой данных */
 public interface DaoFactory<T> {
 
     public interface DaoCreator<T> {
         public GenericDao create(T t);
     }
 
-    /** Возвращает подключение к базе данных */
     public T getConnection() throws DaoException;
 
-    /** Возвращает объект для управления персистентным состоянием объекта */
+    /** Gets an object for managing persistent state of the object */
     public GenericDao getDao(Class dtoClass) throws DaoException;
 }

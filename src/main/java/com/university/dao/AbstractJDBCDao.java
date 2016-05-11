@@ -11,54 +11,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Абстрактный класс предоставляющий базовую реализацию CRUD операций с использованием JDBC.
- *
- * @param <T>  тип объекта персистенции
- * @param <PK> тип первичного ключа
- */
+
 public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
 
-    /**
-     * Возвращает sql запрос для получения всех записей.
-     * <p/>
-     * SELECT * FROM [Table]
-     */
+
     public abstract String getSelectQuery();
-
-    /**
-     * Возвращает sql запрос для вставки новой записи в базу данных.
-     * <p/>
-     * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
-     */
     public abstract String getCreateQuery();
-
-    /**
-     * Возвращает sql запрос для обновления записи.
-     * <p/>
-     * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
-     */
     public abstract String getUpdateQuery();
-
-    /**
-     * Возвращает sql запрос для удаления записи из базы данных.
-     * <p/>
-     * DELETE FROM [Table] WHERE id= ?;
-     */
     public abstract String getDeleteQuery();
-
-    /**
-     * Разбирает ResultSet и возвращает список объектов соответствующих содержимому ResultSet.
-     */
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
-
+    
     /**
-     * Устанавливает аргументы insert запроса в соответствии со значением полей объекта object.
+     * Sets insert query arguments in accordance with field value object
      */
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DaoException;
-
+    
     /**
-     * Устанавливает аргументы update запроса в соответствии со значением полей объекта object.
+     * Sets update query arguments in accordance with field value object.
      */
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DaoException;
 
@@ -66,7 +35,6 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     private Connection connection = null;
     private PreparedStatement statement = null;
     private ResultSet rs = null;
-
 
 
     private Set<ManyToOne> relations = new HashSet<ManyToOne>();
@@ -140,11 +108,10 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
         if (object.getId() != null) {
             throw new DaoException("Object is already persist.");
         }
-        // Сохраняем зависимости
         saveDependence(object);
 
         T persistInstance;
-        // Добавляем запись
+
         String sql = getCreateQuery();
         try {
         	statement = connection.prepareStatement(sql);
@@ -156,7 +123,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
         } catch (Exception e) {
             throw new DaoException(e);
         }
-        // Получаем только что вставленную запись
+        // Get the newly inserted record
         sql = getSelectQuery() + " ORDER BY id DESC LIMIT 1";
         try {
         	statement = connection.prepareStatement(sql);
@@ -188,9 +155,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
 
     @Override
     public void update(T object) throws DaoException {
-        // Сохраняем зависимость
         saveDependence(object);
-
         String sql = getUpdateQuery();
         try {
         	statement = connection.prepareStatement(sql);

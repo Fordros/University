@@ -2,9 +2,7 @@ package com.university.domain;
 
 import com.university.dao.Identified;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class Student extends Person implements Identified<Integer> {
 
     private Group group;

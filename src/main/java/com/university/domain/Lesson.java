@@ -5,9 +5,7 @@ import com.university.dao.Identified;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class Lesson implements Identified<Integer> {
     private Integer id;
     private Group group;

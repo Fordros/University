@@ -1,8 +1,6 @@
 package com.university.domain;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class Person {
     private Integer id;
     private String firstName;

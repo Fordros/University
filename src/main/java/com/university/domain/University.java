@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class University {
     private String name;
     private String address;

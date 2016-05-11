@@ -12,9 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-/**
- * Created by Fordros on 30.04.2016.
- */
 public class StudentTest {
 
     public static void main(String[] args) throws DaoException, SQLException {

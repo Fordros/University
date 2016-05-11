@@ -13,10 +13,10 @@ import java.util.Map;
 
 public class DaoFactoryImpl implements DaoFactory<Connection> {
 
-    private String user = "postgres";//Логин пользователя
-    private String password = "sa62298";//Пароль пользователя
-    private String url = "jdbc:postgresql://localhost:5432/postgres";//URL адрес
-    private String driver = "org.postgresql.Driver";//Имя драйвера
+    private String user = "postgres";
+    private String password = "sa62298";
+    private String url = "jdbc:postgresql://localhost:5432/postgres";
+    private String driver = "org.postgresql.Driver";
     private Map<Class, DaoCreator> creators;
 
 
@@ -42,7 +42,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     public DaoFactoryImpl() {
         try {
-            Class.forName(driver);//Регистрируем драйвер
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

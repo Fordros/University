@@ -6,10 +6,10 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 
 /**
- * Отвечает за реализацию связи многие-к-одному.
+ * Responsible for the implementation of a many- to-one
  *
- * @param <Owner>      класс объекта, чье поле ссылается на зависимый объект.
- * @param <Dependence> класс зависимого объекта.
+ * @param <Owner>      object class whose field references the dependent object
+ * @param <Dependence> class dependent object
  */
 public class ManyToOne<Owner extends Identified, Dependence extends Identified> {
 

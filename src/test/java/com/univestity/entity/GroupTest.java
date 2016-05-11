@@ -7,9 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class GroupTest {
 
     Group group = new Group(1, "F1");
@@ -30,11 +28,5 @@ public class GroupTest {
         group.removeStudent(student);
         System.out.println(group);
     }
-    //этот метод тут не может быть реализован
-    @Test
-    public void moveStudentTest(){
-        group.addStudent(student);
-        group.removeStudent(student);
-        System.out.println(group);
-    }
+
 }

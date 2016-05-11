@@ -2,9 +2,7 @@ package com.university.domain;
 
 import com.university.dao.Identified;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class  Classroom implements Identified<Integer> {
     private Integer id;
     private String number;

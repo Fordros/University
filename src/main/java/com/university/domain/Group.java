@@ -5,9 +5,7 @@ import com.university.dao.Identified;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Fordros on 02.04.2016.
- */
+
 public class Group implements Identified<Integer> {
     private Integer id;
     private String groupNumber;

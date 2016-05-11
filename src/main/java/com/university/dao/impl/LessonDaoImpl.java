@@ -15,9 +15,7 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Fordros on 03.05.2016.
- */
+
 public class LessonDaoImpl extends AbstractJDBCDao<Lesson, Integer> {
     private class PersistLesson extends Lesson {
         public void setId(int id) {
