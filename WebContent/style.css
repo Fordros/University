@@ -1,0 +1,52 @@
+
+.client {
+  width: 400px; /* Ширина элемента в пикселах */
+  padding: 10px; /* Поля вокруг текста */
+  margin: 0 auto; /* Выравниваем по центру */
+  background-color: dimgrey;
+}
+
+.body-style{
+
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333;
+  width: 300px;
+  padding: 10px;
+  margin: 0 auto;
+
+}
+
+.table-style{
+  width: 800px;
+  padding: 10px;
+  margin:  auto;
+}
+
+
+::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+  line-height: 40px;
+  background: #282828;
+}
+.lt-ie9 .addClient-submit {
+  position: absolute;
+  top: 12px;
+  right: -28px;
+  padding: 4px;
+}
+.lt-ie9 .addClient-submit:before, .lt-ie9 .addClient-submit:after {
+  display: none;
+}
+.lt-ie9 .addClient-button {
+  line-height: 48px;
+}
+.lt-ie9 .about {
+  background: #313131;
+}
+

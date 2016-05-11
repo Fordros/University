@@ -5,7 +5,7 @@
   <groupId>com.university</groupId>
   <artifactId>com.fordros</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>com.fordros</name>
   <url>http://maven.apache.org</url>
@@ -16,6 +16,16 @@
 
   <dependencies>
   <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+  </dependency>
+  <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+  </dependency>
+  <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
@@ -25,5 +35,21 @@
             <artifactId>postgresql</artifactId>
             <version>9.3-1102-jdbc41</version>
         </dependency>
+        <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>3.2.0</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery</artifactId>
+        <version>2.1.1</version>
+    </dependency>
   </dependencies>
 </project>
