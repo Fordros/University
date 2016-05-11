@@ -26,16 +26,12 @@ public class Group implements Identified<Integer> {
 
 
     public void addStudent(Student newStudent){
-		if (students == null) {
 			students = new ArrayList<>();
-		}
         students.add(newStudent);
     }
 
     public void removeStudent(Student student){
-		if (students == null) {
 			students = new ArrayList<>();
-		}
         students.remove(student);
     }
 
@@ -61,9 +57,6 @@ public class Group implements Identified<Integer> {
         return students;
     }
 
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
 
     @Override
     public String toString(){
