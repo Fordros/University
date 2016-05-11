@@ -37,7 +37,7 @@ public class DaoImplTest extends GenericDaoTest<Connection> {
     public void setUp() throws DaoException, SQLException {
         connection = factory.getConnection();
         connection.setAutoCommit(false);
-        dao = factory.getDao(connection, daoClass);
+        dao = factory.getDao(daoClass);
     }
 
     @After

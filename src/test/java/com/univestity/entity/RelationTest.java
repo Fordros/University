@@ -32,7 +32,7 @@ public class RelationTest {
 
 	@Test
 	public void testCreate() throws DaoException {
-		Student student = (Student) factory.getDao(connection, Student.class)
+		Student student = (Student) factory.getDao(Student.class)
 				.create();
 		Assert.assertNull("Group is not null.", student.getGroup());
 
@@ -44,11 +44,11 @@ public class RelationTest {
 	@Test
 	public void testPersist() throws DaoException {
 		Student student = new Student();
-		Group group = (Group) factory.getDao(connection, Group.class).create();
+		Group group = (Group) factory.getDao( Group.class).create();
 		group.setGroupNumber("1234");
 		student.setGroup(group);
 		student.setFirstName("ROST");
-		student = (Student) factory.getDao(connection, Student.class).persist(
+		student = (Student) factory.getDao( Student.class).persist(
 				student);
 		Assert.assertNotNull("Group is null.", student.getGroup());
 		Assert.assertEquals("Wrong group number.", "1234", student.getGroup()
@@ -59,7 +59,7 @@ public class RelationTest {
 	public void testPersistAll() throws DaoException {
 		Student student = new Student();
 		student.setGroup(new Group());
-		student = (Student) factory.getDao(connection, Student.class).persist(
+		student = (Student) factory.getDao( Student.class).persist(
 				student);
 		Assert.assertNotNull("Group is null.", student.getGroup());
 		Assert.assertNotNull("Group.id is null.", student.getGroup().getId());
@@ -67,22 +67,22 @@ public class RelationTest {
 
 	@Test
 	public void testUpdate() throws DaoException {
-		Student student = (Student) factory.getDao(connection, Student.class)
+		Student student = (Student) factory.getDao( Student.class)
 				.create();
 		student.setGroup(new Group());
-		factory.getDao(connection, Student.class).update(student);
+		factory.getDao( Student.class).update(student);
 		Assert.assertNotNull("Group is null.", student.getGroup());
 		Assert.assertNotNull("Group.id is null.", student.getGroup().getId());
 	}
 
 	@Test
 	public void testUpdateAll() throws DaoException {
-		Student student = (Student) factory.getDao(connection, Student.class)
+		Student student = (Student) factory.getDao( Student.class)
 				.create();
-		Group group = (Group) factory.getDao(connection, Group.class).create();
+		Group group = (Group) factory.getDao( Group.class).create();
 		group.setGroupNumber("1234");
 		student.setGroup(group);
-		factory.getDao(connection, Student.class).update(student);
+		factory.getDao(Student.class).update(student);
 		Assert.assertNotNull("Group is null.", student.getGroup());
 		Assert.assertEquals("Wrong group number.", "1234", student.getGroup()
 				.getGroupNumber());
@@ -90,12 +90,12 @@ public class RelationTest {
 
 	@Test
 	public void testRead() throws DaoException {
-		Student student = (Student) factory.getDao(connection, Student.class)
+		Student student = (Student) factory.getDao( Student.class)
 				.create();
 		student.setGroup(new Group());
-		factory.getDao(connection, Student.class).update(student);
+		factory.getDao(Student.class).update(student);
 
-		student = (Student) factory.getDao(connection, Student.class).getByPK(
+		student = (Student) factory.getDao( Student.class).getByPK(
 				student.getId());
 		Assert.assertNotNull("Student is null.", student);
 		Assert.assertNotNull("Group is null.", student.getGroup());
@@ -103,15 +103,15 @@ public class RelationTest {
 
 	@Test
 	public void testDelete() throws DaoException {
-		Student student = (Student) factory.getDao(connection, Student.class)
+		Student student = (Student) factory.getDao( Student.class)
 				.create();
 		student.setGroup(new Group());
-		factory.getDao(connection, Student.class).update(student);
+		factory.getDao( Student.class).update(student);
 
 		Group group = student.getGroup();
 
-		factory.getDao(connection, Student.class).delete(student);
-		group = (Group) factory.getDao(connection, Group.class).getByPK(
+		factory.getDao(Student.class).delete(student);
+		group = (Group) factory.getDao( Group.class).getByPK(
 				group.getId());
 		Assert.assertNotNull("Group not found.", group);
 	}
