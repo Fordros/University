@@ -1,9 +1,8 @@
 package com.university.dao;
 
-import java.io.Serializable;
 
 
-public interface Identified<PK extends Serializable> {
+public interface Identified<PK> {
 
     public PK getId();
 }

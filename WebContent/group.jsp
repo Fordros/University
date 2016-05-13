@@ -19,6 +19,7 @@
 
 </head>
 <body style="height: 100%">
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -68,7 +69,7 @@
                             <th style="vertical-align: middle"><h5 class="text-center">Фамилия</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Контактная информация</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Номер группы</h5></th>
-                           
+                           	<th colspan=2 style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
                         </tr>
                         </thead>
                         <c:forEach var="s" items="${students}">
@@ -77,8 +78,10 @@
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.firstName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.lastName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.contactInformation}</h6></th>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>
-                              
+                                <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>	
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=edit&userId=<c:out value="${s.id}"/>">Изменить</a></td>
+                    			<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&userId=<c:out value="${s.id}"/>">Удалить</a></td>
+                          		
                            </tr>
                         </c:forEach>
                         </tbody>

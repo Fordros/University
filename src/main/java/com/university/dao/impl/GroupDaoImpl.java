@@ -9,11 +9,16 @@ import com.university.exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GroupDaoImpl extends AbstractJDBCDao<Group, Integer> {
 
+	 public GroupDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {
+	        super(parentFactory, connection);
+	    }
+	 
     private class PersistGroup extends Group {
         public void setId(int id) {
             super.setId(id);
@@ -48,9 +53,7 @@ public class GroupDaoImpl extends AbstractJDBCDao<Group, Integer> {
         return persist(group);
     }
 
-    public GroupDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {
-        super(parentFactory, connection);
-    }
+    
 
     @Override
     protected List<Group> parseResultSet(ResultSet rs) throws DaoException {

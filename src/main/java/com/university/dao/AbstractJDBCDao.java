@@ -2,6 +2,9 @@ package com.university.dao;
 
 import com.university.exception.DaoException;
 
+
+
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
+public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements GenericDao<T, PK> {
 
 
     public abstract String getSelectQuery();
@@ -222,7 +225,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     protected Identified getDependence(Class<? extends Identified> dtoClass, Serializable pk) throws DaoException {
-        return parentFactory.getDao(dtoClass).getByPK(pk);
+        return parentFactory.getDao(dtoClass).getByPK((Integer) pk);
     }
 
     protected boolean addRelation(Class<? extends Identified> ownerClass, String field) {
