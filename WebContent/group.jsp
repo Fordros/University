@@ -60,7 +60,7 @@
                     <input class="form-control" class="btn btn-default" type="submit"  name="findGroup" id="send" value="Найти" >
                 </div>
             </form>
-
+			<p><a href="group?action=insert">Add User</a></p>
                 <table class="table table-striped table-bordered table-hover table-condensed">
                         <caption class="text-center">Список студентов</caption>
                         <thead>
@@ -79,8 +79,8 @@
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.lastName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.contactInformation}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>	
-                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=edit&userId=<c:out value="${s.id}"/>">Изменить</a></td>
-                    			<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&userId=<c:out value="${s.id}"/>">Удалить</a></td>
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=edit&userId=<c:out value="${s.id}"/>">Изменить</a></h6></td>
+                    			<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&userId=<c:out value="${s.id}"/>">Удалить</a></h6></td>
                           		
                            </tr>
                         </c:forEach>
