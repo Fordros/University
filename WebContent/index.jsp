@@ -32,7 +32,9 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/university">Home</a></li>
-                <li class="passive"><a href="/university/group">Groups</a></li>
+                <li class="passive"><a href="/university/un?action=">Groups</a></li>
+                <li class="passive"><a href="/university/group?action=">Student</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -49,9 +51,8 @@
         </div>
         <div class="col-sm-10 content">
 
-            <div class="row box">
-            <h6>U-N-I-V-E-R-S-I-T-Y</h6>
-            </div>
+            <p><a href="un?action=insert">Add Group</a></p>
+
         </div>
         <div class="col-sm-1 sidenav">
 

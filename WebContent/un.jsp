@@ -19,7 +19,6 @@
 
 </head>
 <body style="height: 100%">
-
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -32,8 +31,9 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li ><a href="/university">Home</a></li>
-                <li class="active"><a href="/university/group?action=">Groups</a></li>
+                <li class="passive"><a href="/university">Home</a></li>
+                <li class="active"><a href="/university/un?action=">Groups</a></li>
+                <li class="passive"><a href="/university/group?action=">Student</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -50,28 +50,25 @@
         </div>
         <div class="col-sm-10 content">
 
-            <div class="row box">
-            <h4 class="text-center">Добавить студента</h4>
-            <form  id="jform" class="form-inline" method="post" action="group" name="frmAddStudent">
+            <p><a href="un?action=insert">Add Group</a></p>
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                        <caption class="text-center">Список групп</caption>
+                        <thead>
+                        <tr class="info">
+                            <th style="vertical-align: middle"><h5 class="text-center">Номер группы</h5></th>
+                           	<th style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="g" items="${groups}">
+                        <tbody>
+                            <tr>
+                                <th style="vertical-align: middle"><h6 class="text-center">${g.groupNumber}</h6></th>
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="?action=delete&id=<c:out value="${g.id}"/>">Удалить</a></h6></td>
+                           </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName" placeholder="Имя"
-                    value="<c:out value="${student.firstName}" />">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName" placeholder="Фамилия"
-                    value="<c:out value="${student.lastName}" />">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контактная информация"
-                    value="<c:out value="${student.contactInformation}" />">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >
-                </div>
-            </form>
-
-            </div>
         </div>
         <div class="col-sm-1 sidenav">
 

@@ -33,7 +33,8 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
-                <li class="active"><a href="/university/group?action=">Groups</a></li>
+                <li class="active"><a href="/university/un?action=">Groups</a></li>
+                <li class="passive"><a href="/university/group?action=">Student</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -51,20 +52,12 @@
         <div class="col-sm-10 content">
 
             <div class="row box">
-            <h4 class="text-center">Добавить студента</h4>
-            <form  id="jform" class="form-inline" method="post" action="group" name="frmAddStudent">
+            <h4 class="text-center">Добавить группу</h4>
+            <form  id="jform" class="form-inline" method="post" action="un" name="frmAddGroup">
 
                 <div class="form-group">
-                    <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName" placeholder="Имя"
-                    value="<c:out value="${student.firstName}" />">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName" placeholder="Фамилия"
-                    value="<c:out value="${student.lastName}" />">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контактная информация"
-                    value="<c:out value="${student.contactInformation}" />">
+                    <input type="text" class="form-control" maxlength="10" name="groupNumber" id="groupNumber" placeholder="Номер группы"
+                    value="<c:out value="${group.groupNymber}" />">
                 </div>
                 <div class="form-group">
                     <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >

@@ -15,7 +15,7 @@ public abstract class BaseServlet {
 
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
-	
+
 	private final static String ERROR_PAGE_URL = "error.jsp";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,17 +54,17 @@ public abstract class BaseServlet {
 		}
 	}
 
-	protected abstract void save() throws ServletException, IOException;
+	public abstract void save() throws ServletException, IOException;
 
-	protected abstract void edit(Integer parseInt) throws ServletException, IOException;
+	public abstract void edit(Integer parseInt) throws ServletException, IOException;
 
-	protected abstract void delete(Integer parseInt) throws ServletException, IOException;
+	public abstract void delete(Integer parseInt) throws ServletException, IOException;
 
-	protected abstract void create() throws ServletException, IOException;
+	public abstract void create() throws ServletException, IOException;
 
-	protected void prepareCreating() throws ServletException, IOException {
+	public void prepareCreating() throws ServletException, IOException {
 
 	};
 
-	protected abstract void viewAll() throws ServletException, IOException, DaoException;
+	public abstract void viewAll() throws ServletException, IOException, DaoException;
 }

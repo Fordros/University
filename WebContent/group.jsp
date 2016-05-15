@@ -33,7 +33,8 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
-                <li class="active"><a href="/university/group">Groups</a></li>
+                <li class="passive"><a href="/university/un?action=">Groups</a></li>
+                <li class="active"><a href="/university/group?action=">Student</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -69,7 +70,7 @@
                             <th style="vertical-align: middle"><h5 class="text-center">Фамилия</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Контактная информация</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Номер группы</h5></th>
-                           	<th colspan=2 style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
+                           	<th style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
                         </tr>
                         </thead>
                         <c:forEach var="s" items="${students}">
@@ -78,10 +79,9 @@
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.firstName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.lastName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${s.contactInformation}</h6></th>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>	
-                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=edit&userId=<c:out value="${s.id}"/>">Изменить</a></h6></td>
-                    			<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&userId=<c:out value="${s.id}"/>">Удалить</a></h6></td>
-                          		
+                                <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&id=<c:out value="${s.id}"/>">Удалить</a></h6></td>
+
                            </tr>
                         </c:forEach>
                         </tbody>
@@ -103,26 +103,26 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <table class="table table-striped table-bordered table-hover table-condensed">
-                        <caption class="text-center">Таблица задолженности по дням</caption>
+                        <caption class="text-center">Откорректировать данные</caption>
                         <thead>
                         <tr class="info">
                             <th style="vertical-align: middle"><h5 class="text-center">Имя</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Фамилия</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Контактная информация</h5></th>
                             <th style="vertical-align: middle"><h5 class="text-center">Номер группы</h5></th>
-                           
+
                         </tr>
                         </thead>
-                        <c:forEach var="s" items="${students}">
+                        <c:set var="s1" value="${student}"/>
                         <tbody>
                             <tr>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.firstName}</h6></th>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.lastName}</h6></th>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.contactInformation}</h6></th>
-                                <th style="vertical-align: middle"><h6 class="text-center">${s.group.groupNumber}</h6></th>
-                              
+                                <th style="vertical-align: middle"><input class="text-center" value="${s1.firstName}"></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${s1.lastName}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${s1.contactInformation}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${s1.group.groupNumber}</h6></th>
+
                            </tr>
-                        </c:forEach>
+
                         </tbody>
                     </table>
                 </div>

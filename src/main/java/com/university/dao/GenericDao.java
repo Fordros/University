@@ -4,6 +4,7 @@ package com.university.dao;
 import com.university.exception.DaoException;
 
 
+
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public interface GenericDao<T extends Identified<PK>, PK> {
 
     public T create() throws DaoException;
 
-    public T persist(T object)  throws DaoException;
+    //public T persist(Class<T> dtoClass)  throws DaoException;
 
     public void update(T object) throws DaoException;
 
@@ -23,4 +24,6 @@ public interface GenericDao<T extends Identified<PK>, PK> {
     public List<T> getAll() throws DaoException;
 
     public T getByPK(Integer key) throws DaoException;
+
+	T persist(T object) throws DaoException;
 }

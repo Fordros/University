@@ -2,6 +2,7 @@ package com.univestity.entity;
 
 import com.university.dao.GenericDao;
 import com.university.dao.Identified;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,8 +42,8 @@ public abstract class GenericDaoTest<T> {
 
     @Test
     public void testGetByPK() throws Exception {
-        Serializable id = dao().create().getId();
-        Identified dto = dao().getByPK(id);
+        Serializable id = (Serializable) dao().create().getId();
+        Identified dto = dao().getByPK((Integer) id);
         Assert.assertNotNull(dto);
     }
 

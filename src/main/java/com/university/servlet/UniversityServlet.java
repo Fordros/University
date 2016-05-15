@@ -3,8 +3,6 @@ package com.university.servlet;
 import java.io.IOException;
 import java.util.List;
 
-
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,24 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
-
+import com.university.domain.Group;
 import com.university.domain.Student;
 import com.university.exception.DaoException;
-import com.university.service.GroupService;
+import com.university.service.AbstaractService;
 
-/**
- * Servlet implementation class Student
- */
-@WebServlet("/group")
-public class GroupServlet extends HttpServlet {
+
+@WebServlet("/un")
+public class UniversityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static String INSERT_OR_EDIT = "/group.jsp";
-    private static String LIST_USER = "/addStudent.jsp";
+	private static String INSERT_OR_EDIT = "/un.jsp";
+    private static String LIST_USER = "/addGroup.jsp";
 
-    	GroupService groupService = new GroupService();
+    AbstaractService universityService = new AbstaractService(Group.class);
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="startForward";
@@ -41,9 +34,9 @@ public class GroupServlet extends HttpServlet {
         if (action.equalsIgnoreCase("delete")){
             try {
             	int id = Integer.parseInt(request.getParameter("id"));
-                groupService.delete(id);
+            	universityService.delete(id);
                 forward = INSERT_OR_EDIT;
-				request.setAttribute("students", groupService.getAllStudents());
+				request.setAttribute("groups", universityService.getAll());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -52,8 +45,8 @@ public class GroupServlet extends HttpServlet {
         	try {
 	            forward = LIST_USER;
 	            int id = Integer.parseInt(request.getParameter("id"));
-	            Student student = groupService.findById(id);
-	            request.setAttribute("student", student);
+	            Group group = (Group) universityService.findById(id);
+	            request.setAttribute("group", group);
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -61,7 +54,7 @@ public class GroupServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("insert")){
         	try {
 	            forward = LIST_USER;
-	            request.setAttribute("students", groupService.getAllStudents());
+	            request.setAttribute("groups", universityService.getAll());
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -69,8 +62,7 @@ public class GroupServlet extends HttpServlet {
         } else {
         	 try {
             forward = INSERT_OR_EDIT;
-				List<Student> students = groupService.getAllStudents();
-				request.setAttribute("students", students);
+				request.setAttribute("groups", universityService.getAll());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -85,13 +77,10 @@ public class GroupServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
 
-		Student student = new Student();
+		Group group = new Group();
 		try {
-		student.setFirstName(request.getParameter("firstName"));
-		student.setLastName(request.getParameter("lastName"));
-		student.setContactInformation(request.getParameter("contactInformation"));
-		groupService.addNewStudent(student);
-
+			group.setGroupNumber(request.getParameter("groupNumber"));
+		universityService.addNew(group);
 
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block
@@ -100,13 +89,11 @@ public class GroupServlet extends HttpServlet {
 
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
-			request.setAttribute("students", groupService.getAllStudents());
+			request.setAttribute("groups", universityService.getAll());
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         view.forward(request, response);
 	}
-	}
-
-
+}
