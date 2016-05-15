@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
-                <li class="active"><a href="/university/group?action=">Groups</a></li>
+                <li class="active"><a href="/university/group">Groups</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -51,26 +51,25 @@
         <div class="col-sm-10 content">
 
             <div class="row box">
-            <h4 class="text-center">Добавить студента</h4>
+            <h4 class="text-center">Поиск группы</h4>
             <form  id="jform" class="form-inline" method="post" action="group" name="frmAddStudent">
-
                 <div class="form-group">
-                    <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName" placeholder="Имя"
+                    <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName" placeholder="Имя" 
                     value="<c:out value="${student.firstName}" />">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName" placeholder="Фамилия"
-                    value="<c:out value="${student.lastName}" />">
+                    value="<c:out value="${student.lastName}" />">>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контактная информация"
-                    value="<c:out value="${student.contactInformation}" />">
+                    value="<c:out value="${student.contactInformation}" />">>
                 </div>
                 <div class="form-group">
                     <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >
                 </div>
             </form>
-
+       
             </div>
         </div>
         <div class="col-sm-1 sidenav">

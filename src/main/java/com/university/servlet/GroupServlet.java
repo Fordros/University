@@ -35,69 +35,61 @@ public class GroupServlet extends HttpServlet {
 		String forward="startForward";
         String action = request.getParameter("action");
 
-
-
-
+		
+		
+		
         if (action.equalsIgnoreCase("delete")){
             try {
             	int id = Integer.parseInt(request.getParameter("id"));
                 groupService.delete(id);
-                forward = INSERT_OR_EDIT;
+                forward = LIST_USER;
 				request.setAttribute("students", groupService.getAllStudents());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
-			}
+			}    
         } else if (action.equalsIgnoreCase("edit")){
         	try {
-	            forward = LIST_USER;
+	            forward = INSERT_OR_EDIT;
 	            int id = Integer.parseInt(request.getParameter("id"));
 	            Student student = groupService.findById(id);
 	            request.setAttribute("student", student);
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
-			}
-        } else if (action.equalsIgnoreCase("insert")){
+			}   
+        } else if (action.equalsIgnoreCase("listUser")){
         	try {
 	            forward = LIST_USER;
 	            request.setAttribute("students", groupService.getAllStudents());
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
-        	}
+        	}   
         } else {
-        	 try {
             forward = INSERT_OR_EDIT;
-				List<Student> students = groupService.getAllStudents();
-				request.setAttribute("students", students);
-			} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
-			}
         }
-
-        request.getRequestDispatcher(forward).forward(request, response);
-
+        
+        request.getRequestDispatcher(forward).forward(request, response);	
+       
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
-
+		
 		Student student = new Student();
 		try {
 		student.setFirstName(request.getParameter("firstName"));
 		student.setLastName(request.getParameter("lastName"));
 		student.setContactInformation(request.getParameter("contactInformation"));
-		groupService.addNewStudent(student);
-
-
+		
+			groupService.addNewStudent(student);
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+        
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
 			request.setAttribute("students", groupService.getAllStudents());
