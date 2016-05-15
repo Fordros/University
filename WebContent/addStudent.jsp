@@ -63,10 +63,18 @@
                     value="<c:out value="${student.lastName}" />">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контактная информация"
+                    <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контакт. инфо."
                     value="<c:out value="${student.contactInformation}" />">
                 </div>
-                <div class="form-group">
+				<div class="form-group">
+				<select class="form-control" id="exampleSelect1" name="exampleSelect1">
+				<c:forEach var="g" items="${groups}">
+				  <option value ="<c:out value="${g.id}"/>">${g.groupNumber}</option>
+				</c:forEach>
+				</select>
+
+			   </div>
+				<div class="form-group">
                     <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >
                 </div>
             </form>

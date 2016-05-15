@@ -38,9 +38,6 @@ public class GroupService{
    }
 
    public void addNewStudent(Student student) throws DaoException{
-        Group group = (Group) factory.getDao(Group.class).create();
-        group.setGroupNumber("987");
-        student.setGroup(group);
         student = (Student) factory.getDao(Student.class).persist(student);
         //factory.getDao(Student.class).update(student);
     }

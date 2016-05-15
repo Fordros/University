@@ -23,12 +23,12 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
     public abstract String getUpdateQuery();
     public abstract String getDeleteQuery();
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
-    
+
     /**
      * Sets insert query arguments in accordance with field value object
      */
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DaoException;
-    
+
     /**
      * Sets update query arguments in accordance with field value object.
      */
@@ -77,6 +77,8 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
         }
         return list.iterator().next();
     }
+
+
 
     @Override
     public List<T> getAll() throws DaoException {
