@@ -34,7 +34,6 @@
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
                 <li class="dropdown">
-                <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
 			        <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
@@ -51,7 +50,7 @@
 			        </ul>
 			     </li>
 			     <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer?action=">Lecturer
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer">Lecturer
 			        <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
 			        	<li><a href="lecturer?action=">Все преподы</a></li>
@@ -75,18 +74,31 @@
         <div class="col-sm-10 content">
 
             <div class="row box">
-            <h4 class="text-center">Добавить группу</h4>
-            <form  id="jform" class="form-inline" method="post" action="un" name="frmAddGroup">
 
-                <div class="form-group">
-                    <input type="text" class="form-control" maxlength="10" name="groupNumber" id="groupNumber" placeholder="Номер группы"
-                    value="<c:out value="${group.groupNymber}" />">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >
-                </div>
-            </form>
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                        <caption class="text-center">Список преподавателей</caption>
+                        <thead>
+                        <tr class="info">
+                            <th style="vertical-align: middle"><h5 class="text-center">Имя</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Фамилия</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Контактная информация</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Квалификация</h5></th>
+                           	<th style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="l" items="${lecturers}">
+                        <tbody>
+                            <tr>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.firstName}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.lastName}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.contactInformation}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.qualification}</h6></th>
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&id=<c:out value="${s.id}"/>">Удалить</a></h6></td>
 
+                           </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
             </div>
         </div>
         <div class="col-sm-1 sidenav">
@@ -94,6 +106,7 @@
         </div>
     </div>
 </div>
+
 
 <footer class="container-fluid text-center">
     <p>by Fordros</p>

@@ -17,9 +17,6 @@ import com.university.exception.DaoException;
 import com.university.service.AbstaractService;
 import com.university.service.GroupService;
 
-/**
- * Servlet implementation class Student
- */
 @WebServlet("/group")
 public class GroupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -46,12 +43,12 @@ public class GroupServlet extends HttpServlet {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
 			}
-        } else if (action.equalsIgnoreCase("edit")){
+        } else if (action.equalsIgnoreCase("find")){
         	try {
-	            forward = LIST_USER;
+	            forward = INSERT_OR_EDIT;
 	            int id = Integer.parseInt(request.getParameter("id"));
 	            Student student = groupService.findById(id);
-	            request.setAttribute("student", student);
+	            request.setAttribute("students", student);
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -85,6 +82,21 @@ public class GroupServlet extends HttpServlet {
 		request.setCharacterEncoding ("UTF-8");
 
 		Student student = new Student();
+		String action = request.getParameter("action");
+		String forward="";
+		System.out.println(action);
+		System.out.println(forward);
+		if (action.equalsIgnoreCase("find")){
+        	try {
+	            
+	            int id = Integer.parseInt(request.getParameter("id"));
+	            student = groupService.findById(id);
+	            request.setAttribute("students", student);
+        	} catch (DaoException e) {
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+				e.printStackTrace();
+			}
+		}else{
 		try {
 		student.setFirstName(request.getParameter("firstName"));
 		student.setLastName(request.getParameter("lastName"));
@@ -99,7 +111,7 @@ public class GroupServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		}
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
 			request.setAttribute("students", groupService.getAllStudents());

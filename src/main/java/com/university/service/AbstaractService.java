@@ -35,7 +35,6 @@ public class AbstaractService<T> {
 
 
    public <dtoClass> void  addNew(T object) throws DaoException{
-	   dtoClass entity = (dtoClass) factory.getDao(dtoClass).create();
 	   factory.getDao(dtoClass).persist( (Identified) object);
     }
 

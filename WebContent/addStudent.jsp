@@ -33,7 +33,30 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
-                <li class="active"><a href="/university/group?action=">Groups</a></li>
+                <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
+			        <span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			        	<li><a href="un?action=">Все группы</a></li>
+			          	<li><a href="un?action=insert">Добавить группу</a></li>
+			        </ul>
+			     </li>
+                <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Students
+			        <span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			        	<li><a href="group?action=">Все студенты</a></li>
+			          	<li><a href="group?action=insert">Добавить студента</a></li>
+			        </ul>
+			     </li>
+			     <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer?action=">Lecturer
+			        <span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			        	<li><a href="lecturer?action=">Все преподы</a></li>
+			          	<li><a href="lecturer?action=insert">Добавить препода</a></li>
+			        </ul>
+			     </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

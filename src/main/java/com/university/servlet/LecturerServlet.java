@@ -10,42 +10,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.domain.Group;
-import com.university.domain.Student;
+import com.university.domain.Lecturer;
 import com.university.exception.DaoException;
 import com.university.service.AbstaractService;
 
-@WebServlet("/un")
-public class UniversityServlet extends HttpServlet {
+@WebServlet("/lecturer")
+public class LecturerServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	private static String INSERT_OR_EDIT = "/un.jsp";
-    private static String LIST_USER = "/addGroup.jsp";
-
-    AbstaractService universityService = new AbstaractService(Group.class);
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String forward="startForward";
+	private static String INSERT_OR_EDIT = "/lecturer.jsp";
+    private static String LIST_USER = "/addLecturer.jsp";
+    
+    AbstaractService service = new AbstaractService(Lecturer.class);
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String forward="";
         String action = request.getParameter("action");
-
-
-
 
         if (action.equalsIgnoreCase("delete")){
             try {
             	int id = Integer.parseInt(request.getParameter("id"));
-            	universityService.delete(id);
+            	service.delete(id);
                 forward = INSERT_OR_EDIT;
-				request.setAttribute("groups", universityService.getAll());
+				request.setAttribute("lecturers", service.getAll());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
 			}
-        } else if (action.equalsIgnoreCase("edit")){
+        } else if (action.equalsIgnoreCase("find")){
         	try {
-	            forward = LIST_USER;
+	            forward = INSERT_OR_EDIT;
 	            int id = Integer.parseInt(request.getParameter("id"));
-	            Group group = (Group) universityService.findById(id);
-	            request.setAttribute("group", group);
+	            Lecturer lecturer = (Lecturer) service.findById(id);
+	            request.setAttribute("lecturer", lecturer);
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -53,7 +49,7 @@ public class UniversityServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("insert")){
         	try {
 	            forward = LIST_USER;
-	            request.setAttribute("groups", universityService.getAll());
+	            request.setAttribute("lecturers", service.getAll());
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -61,7 +57,8 @@ public class UniversityServlet extends HttpServlet {
         } else {
         	 try {
             forward = INSERT_OR_EDIT;
-				request.setAttribute("groups", universityService.getAll());
+				List<Lecturer> lecturers = service.getAll();
+				request.setAttribute("lecturers", lecturers);
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -76,23 +73,24 @@ public class UniversityServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
 
-		Group group = new Group();
+		Lecturer lecturer = new Lecturer();
 		try {
-			group.setGroupNumber(request.getParameter("groupNumber"));
-		universityService.addNew(group);
-
+			lecturer.setFirstName(request.getParameter("firstName"));
+			lecturer.setLastName(request.getParameter("lastName"));
+			lecturer.setContactInformation(request.getParameter("contactInformation"));
+			lecturer.setQualification(request.getParameter("qualification"));
+			service.addNew(lecturer);
 		} catch (DaoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
-			request.setAttribute("groups", universityService.getAll());
+			request.setAttribute("lecturers", service.getAll());
 		} catch (DaoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         view.forward(request, response);
 	}
+    
 }

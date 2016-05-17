@@ -34,7 +34,6 @@
             <ul class="nav navbar-nav">
                 <li ><a href="/university">Home</a></li>
                 <li class="dropdown">
-                <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
 			        <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
@@ -75,14 +74,35 @@
         <div class="col-sm-10 content">
 
             <div class="row box">
-            <h4 class="text-center">Добавить группу</h4>
-            <form  id="jform" class="form-inline" method="post" action="un" name="frmAddGroup">
+            <h4 class="text-center">Добавить преподавателя</h4>
+            <form  id="jform" class="form-inline" method="post" action="lecturer" name="frmAddLecturer">
 
                 <div class="form-group">
-                    <input type="text" class="form-control" maxlength="10" name="groupNumber" id="groupNumber" placeholder="Номер группы"
-                    value="<c:out value="${group.groupNymber}" />">
+                    <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName" placeholder="Имя"
+                    value="<c:out value="${lecturer.firstName}" />">
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName" placeholder="Фамилия"
+                    value="<c:out value="${lecturer.lastName}" />">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" maxlength="255" name="contactInformation" id="contactInformation" placeholder="Контакт. инфо."
+                    value="<c:out value="${lecturer.contactInformation}" />">
+                </div>
+				<div class="form-group">
+				<select class="form-control" id="qualification" name="qualification">
+				  <option value ="1"/>FULL_PROFESSOR</option>
+				  <option value ="2"/>ASSOCIATE_PROFESSOR</option>
+				  <option value ="3"/>SENIOR_RESEARCHER</option>
+				  <option value ="4"/>ASSISTANT_PROFESSOR</option>
+				  <option value ="5"/>SENIOR_LECTURER</option>
+				  <option value ="6"/>LECTURER</option>
+				  <option value ="7"/>SENIOR_RESEARCH</option>
+				  <option value ="8"/>RESEARCH</option>
+				</select>
+
+			   </div>
+				<div class="form-group">
                     <input class="form-control" class="btn btn-default" type="submit"  name="addStudent" id="send" value="Добавить" >
                 </div>
             </form>
