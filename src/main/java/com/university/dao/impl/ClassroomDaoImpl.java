@@ -22,19 +22,19 @@ public class ClassroomDaoImpl extends AbstractJDBCDao<Classroom, Integer> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT id, number, addres FROM Classroom";
+        return "SELECT id, number, address FROM Classroom";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO Classroom (number, addres) \n" +
+        return "INSERT INTO Classroom (number, address) \n" +
                 "VALUES (?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
         return "UPDATE Classroom \n" +
-                "SET number = ?, addres  = ? \n" +
+                "SET number = ?, address  = ? \n" +
                 "WHERE id = ?;";
     }
 
@@ -61,7 +61,7 @@ public class ClassroomDaoImpl extends AbstractJDBCDao<Classroom, Integer> {
                 PersistClassroom classroom = new PersistClassroom();
                 classroom.setId(rs.getInt("id"));
                 classroom.setNumber(rs.getString("number"));
-                classroom.setAddress(rs.getString("addres"));
+                classroom.setAddress(rs.getString("address"));
                 result.add(classroom);
             }
         } catch (Exception e) {

@@ -12,17 +12,20 @@ public class Lesson implements Identified<Integer> {
     private Lecturer professor;
     private Classroom classroom;
     private Date lessonTime;
-    StudiesTypes studiesTypes;
+    private String studiesTypes;
 
     public Lesson(){
 
     }
 
-    public Lesson(Group group, Lecturer professor, Classroom classroom, Date classTime, StudiesTypes studiesTypes){
+
+
+	public Lesson(Group group, Lecturer professor, Classroom classroom, Date lessonTime, String studiesTypes){
         this.setGroup(group);
         this.setProfessor(professor);
         this.setClassroom(classroom);
-        this.setClassTime(classTime);
+        this.setLessonTime(lessonTime);
+        this.setStudiesTypes(studiesTypes);
     }
 
     @Override
@@ -58,13 +61,21 @@ public class Lesson implements Identified<Integer> {
         this.classroom = classroom;
     }
 
-    public Date getClassTime() {
-        return lessonTime;
-    }
+    public Date getLessonTime() {
+		return lessonTime;
+	}
 
-    public void setClassTime(Date classTime) {
-        this.lessonTime = classTime;
-    }
+	public void setLessonTime(Date lessonTime) {
+		this.lessonTime = lessonTime;
+	}
+
+	public String getStudiesTypes() {
+		return studiesTypes;
+	}
+
+	public void setStudiesTypes(String studiesTypes) {
+		this.studiesTypes = studiesTypes;
+	}
 
     @Override
     public String toString(){

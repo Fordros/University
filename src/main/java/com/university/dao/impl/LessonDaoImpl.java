@@ -55,7 +55,7 @@ public class LessonDaoImpl extends AbstractJDBCDao<Lesson, Integer> {
     public LessonDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {
         super(parentFactory, connection);
         addRelation(Lesson.class, "group");
-        addRelation(Lesson.class, "professor");
+        addRelation(Lesson.class, "lecturer");
         addRelation(Lesson.class, "classroom");
     }
 
@@ -66,10 +66,11 @@ public class LessonDaoImpl extends AbstractJDBCDao<Lesson, Integer> {
             while (rs.next()) {
                 PersistLesson lesson = new PersistLesson();
                 lesson.setId(rs.getInt("id"));
-                lesson.setGroup((Group) getDependence(Group.class, rs.getString("number")));
-                lesson.setProfessor((Lecturer) getDependence(Lecturer.class, rs.getString("lastName")));
-                lesson.setClassroom((Classroom) getDependence(Classroom.class, rs.getString("number")));
-                lesson.setClassTime(rs.getDate("weekDay"));
+                lesson.setGroup((Group) getDependence(Group.class, rs.getString("id_group")));
+                lesson.setProfessor((Lecturer) getDependence(Lecturer.class, rs.getString("id_lecturer")));
+                lesson.setClassroom((Classroom) getDependence(Classroom.class, rs.getString("id_classroom")));
+                lesson.setLessonTime(rs.getDate("lessontime"));
+                lesson.setStudiesTypes(rs.getString("studiesTypes"));
                 result.add(lesson);
             }
         } catch (Exception e) {
@@ -81,12 +82,43 @@ public class LessonDaoImpl extends AbstractJDBCDao<Lesson, Integer> {
 
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Lesson lesson) throws DaoException {
+    	try {
+            int groupId = (lesson.getGroup() == null || lesson.getGroup().getId() == null) ? -1
+                    : lesson.getGroup().getId();
+            int lecturerId = (lesson.getProfessor() == null || lesson.getProfessor().getId() == null) ? -1
+                    : lesson.getProfessor().getId();
+            int classroomId = (lesson.getClassroom() == null || lesson.getClassroom().getId() == null) ? -1
+                    : lesson.getClassroom().getId();
 
+            statement.setInt(1, groupId);
+            statement.setInt(2, lecturerId);
+            statement.setInt(3, classroomId);
+            statement.setDate(4, (Date) lesson.getLessonTime());
+            statement.setString(5, lesson.getStudiesTypes());
+            statement.setInt(6, lesson.getId());
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Lesson lesson) throws DaoException {
+    	try {
+            int groupId = (lesson.getGroup() == null || lesson.getGroup().getId() == null) ? -1
+                    : lesson.getGroup().getId();
+            int lecturerId = (lesson.getProfessor() == null || lesson.getProfessor().getId() == null) ? -1
+                    : lesson.getProfessor().getId();
+            int classroomId = (lesson.getClassroom() == null || lesson.getClassroom().getId() == null) ? -1
+                    : lesson.getClassroom().getId();
 
+            statement.setInt(1, groupId);
+            statement.setInt(2, lecturerId);
+            statement.setInt(3, classroomId);
+            statement.setDate(4, (Date) lesson.getLessonTime());
+            statement.setString(5, lesson.getStudiesTypes());
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
     }
 
     protected Date convert(java.util.Date date) {

@@ -57,6 +57,14 @@
 			          	<li><a href="lecturer?action=insert">Добавить препода</a></li>
 			        </ul>
 			     </li>
+			     <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="">Lesson
+			        <span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			        	<li><a href="lesson?action=">Расписание занятий</a></li>
+			          	<li><a href="lesson?action=insert">Добавить занятие</a></li>
+			        </ul>
+			     </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -82,7 +90,7 @@
                 <div class="form-group">
                     <input class="form-control" class="btn btn-default" type="submit"  name="find" id="send" value="Найти" >
                 </div>
-            </form>--> 
+            </form>-->
                 <table class="table table-striped table-bordered table-hover table-condensed">
                         <caption class="text-center">Список студентов</caption>
                         <thead>

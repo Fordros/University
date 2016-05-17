@@ -10,12 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.dao.impl.GroupDaoImpl;
+import com.university.domain.Classroom;
 import com.university.domain.Group;
+import com.university.domain.Lecturer;
+import com.university.domain.Lesson;
 import com.university.domain.Student;
 import com.university.exception.DaoException;
 import com.university.service.AbstaractService;
-import com.university.service.GroupService;
 
 @WebServlet("/group")
 public class GroupServlet extends HttpServlet {
@@ -23,14 +24,12 @@ public class GroupServlet extends HttpServlet {
 	private static String INSERT_OR_EDIT = "/group.jsp";
     private static String LIST_USER = "/addStudent.jsp";
 
-    	GroupService groupService = new GroupService();
-    	AbstaractService universityService = new AbstaractService(Group.class);
+    	AbstaractService studentService = new AbstaractService(Student.class);
+    	AbstaractService groupService = new AbstaractService(Group.class);
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="startForward";
         String action = request.getParameter("action");
-
-
 
 
         if (action.equalsIgnoreCase("delete")){
@@ -38,7 +37,7 @@ public class GroupServlet extends HttpServlet {
             	int id = Integer.parseInt(request.getParameter("id"));
                 groupService.delete(id);
                 forward = INSERT_OR_EDIT;
-				request.setAttribute("students", groupService.getAllStudents());
+				request.setAttribute("students", studentService.getAll());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -47,7 +46,7 @@ public class GroupServlet extends HttpServlet {
         	try {
 	            forward = INSERT_OR_EDIT;
 	            int id = Integer.parseInt(request.getParameter("id"));
-	            Student student = groupService.findById(id);
+	            Student student = (Student) studentService.findById(id);
 	            request.setAttribute("students", student);
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -56,8 +55,9 @@ public class GroupServlet extends HttpServlet {
         } else if (action.equalsIgnoreCase("insert")){
         	try {
 	            forward = LIST_USER;
-	            request.setAttribute("students", groupService.getAllStudents());
-	            request.setAttribute("groups", universityService.getAll());
+	            request.setAttribute("students", studentService.getAll());
+	            request.setAttribute("groups", groupService.getAll());
+
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -65,7 +65,7 @@ public class GroupServlet extends HttpServlet {
         } else {
         	 try {
             forward = INSERT_OR_EDIT;
-				List<Student> students = groupService.getAllStudents();
+				List<Student> students = studentService.getAll();
 				request.setAttribute("students", students);
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -81,40 +81,26 @@ public class GroupServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
 
-		Student student = new Student();
-		String action = request.getParameter("action");
-		String forward="";
-		System.out.println(action);
-		System.out.println(forward);
-		if (action.equalsIgnoreCase("find")){
-        	try {
-	            
-	            int id = Integer.parseInt(request.getParameter("id"));
-	            student = groupService.findById(id);
-	            request.setAttribute("students", student);
-        	} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
-			}
-		}else{
+
 		try {
-		student.setFirstName(request.getParameter("firstName"));
-		student.setLastName(request.getParameter("lastName"));
-		student.setContactInformation(request.getParameter("contactInformation"));
-		String[] option = request.getParameterValues("exampleSelect1");
-		Group group = (Group) universityService.findById(Integer.parseInt(option[0]));
-		student.setGroup(group);
-		groupService.addNewStudent(student);
+			Student student = new Student();
 
-
-		} catch (DaoException e) {
+			student.setFirstName(request.getParameter("firstName"));
+			student.setLastName(request.getParameter("lastName"));
+			student.setContactInformation(request.getParameter("contactInformation"));
+			String[] option = request.getParameterValues("exampleSelect1");
+			Group group;
+			group = (Group) groupService.findById(Integer.parseInt(option[0]));
+			student.setGroup(group);
+			studentService.addNew(student);
+		} catch (NumberFormatException | DaoException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
-		}
+
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
-			request.setAttribute("students", groupService.getAllStudents());
+			request.setAttribute("students", studentService.getAll());
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -16,10 +16,10 @@ public class UniversityTest {
     Student student = new Student(1,"Rost","Ivashchenko","0675404060", group);
     Student student1 = new Student(2, "Ivav", "Ivanov", "0671231231", group1);
     Classroom classroom = new Classroom("123","Telmana 28");
-    Lecturer lecturer = new Lecturer(1,"Sergey","Nemchinskiy","0671234567", LecturerQualification.FULL_PROFESSOR);
-    Lecturer lecturer2 = new Lecturer(2,"Dmitriy","Gorskiy","0677654321", LecturerQualification.FULL_PROFESSOR);
-    Lesson lesson  = new Lesson(group,lecturer,classroom,calen1.getTime(), StudiesTypes.SEMINAR);
-    Lesson lesson2 = new Lesson(group1, lecturer2, classroom, calen2.getTime(), StudiesTypes.LABORATORY_CLASS);
+    Lecturer lecturer = new Lecturer(1,"Sergey","Nemchinskiy","0671234567", "FULL_PROFESSOR");
+    Lecturer lecturer2 = new Lecturer(2,"Dmitriy","Gorskiy","0677654321", "FULL_PROFESSOR");
+    Lesson lesson  = new Lesson(group,lecturer,classroom,calen1.getTime(), "SEMINAR");
+    Lesson lesson2 = new Lesson(group1, lecturer2, classroom, calen2.getTime(), "LABORATORY_CLASS");
     University university = new University("KPI","Kyiv","0441234567");
 
     @Test

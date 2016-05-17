@@ -84,7 +84,7 @@ public class University {
         List<Lesson> result = new ArrayList<Lesson>();
         Date today = new Date();
         for ( Lesson l : timetable) {
-            if (l.getProfessor().equals(lecturer) && l.getClassTime().after(today) && l.getClassTime().before(date)){
+            if (l.getProfessor().equals(lecturer) && l.getLessonTime().after(today) && l.getLessonTime().before(date)){
                 result.add(l);
             }
         }
@@ -95,7 +95,7 @@ public class University {
         List<Lesson> result = new ArrayList<Lesson>();
         Date today = new Date();
         for ( Lesson l : timetable) {
-            if (l.getGroup().equals(student.getGroup()) && l.getClassTime().after(today) && l.getClassTime().before(date)){
+            if (l.getGroup().equals(student.getGroup()) && l.getLessonTime().after(today) && l.getLessonTime().before(date)){
                 result.add(l);
             }
         }
