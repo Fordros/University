@@ -91,14 +91,14 @@
                 </div>
 				<div class="form-group">
 				<select class="form-control" id="qualification" name="qualification">
-				  <option value ="1"/>FULL_PROFESSOR</option>
-				  <option value ="2"/>ASSOCIATE_PROFESSOR</option>
-				  <option value ="3"/>SENIOR_RESEARCHER</option>
-				  <option value ="4"/>ASSISTANT_PROFESSOR</option>
-				  <option value ="5"/>SENIOR_LECTURER</option>
-				  <option value ="6"/>LECTURER</option>
-				  <option value ="7"/>SENIOR_RESEARCH</option>
-				  <option value ="8"/>RESEARCH</option>
+				  <option value ="FULL_PROFESSOR">FULL_PROFESSOR</option>
+				  <option value ="2">ASSOCIATE_PROFESSOR</option>
+				  <option value ="3">SENIOR_RESEARCHER</option>
+				  <option value ="4">ASSISTANT_PROFESSOR</option>
+				  <option value ="5">SENIOR_LECTURER</option>
+				  <option value ="6">LECTURER</option>
+				  <option value ="7">SENIOR_RESEARCH</option>
+				  <option value ="8">RESEARCH</option>
 				</select>
 
 			   </div>

@@ -93,8 +93,7 @@
                                 <th style="vertical-align: middle"><h6 class="text-center">${l.lastName}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${l.contactInformation}</h6></th>
                                 <th style="vertical-align: middle"><h6 class="text-center">${l.qualification}</h6></th>
-                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="group?action=delete&id=<c:out value="${s.id}"/>">Удалить</a></h6></td>
-
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="lecturer?action=delete&id=<c:out value="${l.id}"/>">Удалить</a></h6></td>
                            </tr>
                         </c:forEach>
                         </tbody>
