@@ -19,6 +19,7 @@
 
 </head>
 <body style="height: 100%">
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -31,7 +32,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/university">Home</a></li>
+                <li ><a href="/university">Home</a></li>
                 <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
 			        <span class="caret"></span></a>
@@ -82,8 +83,33 @@
         </div>
         <div class="col-sm-10 content">
 
+            <div class="row box">
+            <h4 class="text-center">Расписание</h4>
+            <form  id="jform" class="form-inline" method="post" action="timetable" name="frmAddLesson">
+
+                <div class="form-group">
+                    <select class="form-control" id="optionTimetable" name="optionTimetable">
+						<c:forEach var="l" items="${lecturers}">
+							<option value ="<c:out value="${l.id}"/>">${l.lastName}</option>
+						</c:forEach>
+						<c:forEach var="g" items="${groups}">
+							<option value ="<c:out value="${g.id}"/>">${g.groupNumber}</option>
+						</c:forEach>
+					</select>
+					<input hidden="true" type="text" name="typesearch" value="<c:out value="${name}"/>" />
+
+                </div>
 
 
+			   <div class="form-group">
+                    <input type="datetime-local" min="" class="form-control" name="lessonTime" id="lessonTime" placeholder="По дату"/>
+                </div>
+				<div class="form-group">
+                    <input class="form-control" class="btn btn-default" type="submit"  name="find" id="send" value="Найти" >
+                </div>
+            </form>
+
+            </div>
         </div>
         <div class="col-sm-1 sidenav">
 

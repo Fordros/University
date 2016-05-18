@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,10 +48,15 @@ public class LessonServlet extends HttpServlet{
 			}
         } else if (action.equalsIgnoreCase("find")){
         	try {
-	            forward = INSERT_OR_EDIT;
-	            int id = Integer.parseInt(request.getParameter("id"));
-	            Lesson  lesson = (Lesson) lessonService.findById(id);
-	            request.setAttribute("lesson", lesson);
+	            forward = "timetable.jsp";
+	            int candidate = Integer.parseInt(request.getParameter("for"));
+	            if(candidate == 1){
+	            	request.setAttribute("lecturers", lecturerService.getAll());
+	            	request.setAttribute("name", candidate);
+	            }else{
+	            	request.setAttribute("groups", groupService.getAll());
+	            	request.setAttribute("name", candidate);
+	            }
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -69,23 +73,20 @@ public class LessonServlet extends HttpServlet{
         	}
         } else {
         	 try {
-            forward = INSERT_OR_EDIT;
-				List<Lesson> lessons = lessonService.getAll();
+	            forward = INSERT_OR_EDIT;
+	            List<Lesson> lessons = lessonService.getAll();
 				request.setAttribute("lessons", lessons);
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
 			}
         }
-
         request.getRequestDispatcher(forward).forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
-
 		Lesson lesson = new Lesson();
 		try {
 			String[] optionGroup = request.getParameterValues("optionGroup");
@@ -98,28 +99,30 @@ public class LessonServlet extends HttpServlet{
 			Classroom classroom = (Classroom) classroomService.findById(Integer.parseInt(optionClassroom[0]));
 
 			lesson.setGroup(group);
-			lesson.setProfessor(lecturer);
+			lesson.setLecturer(lecturer);
 			lesson.setClassroom(classroom);
-			lesson.setStudiesTypes(request.getParameter("stydiesType"));
+			lesson.setStudiesTypes(request.getParameter("studiesType"));
+
 			try {
-	            Date lessonTime = new SimpleDateFormat("yyyy/mm/dd").parse(request.getParameter("lessonTime"));
+				String lessonTimeString = request.getParameter("lessonTime");
+	            Date lessonTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(lessonTimeString);
+
 	            lesson.setLessonTime(lessonTime);
 	        } catch (ParseException e) {
 	            e.printStackTrace();
 	        }
-
 			lessonService.addNew(lesson);
-		} catch (DaoException e) {
-			e.printStackTrace();
-		}
 
-        RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        try {
-			request.setAttribute("lecturers", lessonService.getAll());
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-        view.forward(request, response);
+		try {
+			List<Lesson> lessons = lessonService.getAll();
+			request.setAttribute("lessons", lessons);
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
 	}
-
 }

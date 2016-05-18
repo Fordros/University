@@ -1,7 +1,6 @@
 package com.university.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.university.domain.Group;
-import com.university.domain.Student;
 import com.university.exception.DaoException;
 import com.university.service.AbstaractService;
 
@@ -26,9 +24,6 @@ public class UniversityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="startForward";
         String action = request.getParameter("action");
-
-
-
 
         if (action.equalsIgnoreCase("delete")){
             try {
@@ -69,7 +64,6 @@ public class UniversityServlet extends HttpServlet {
         }
 
         request.getRequestDispatcher(forward).forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,20 +73,13 @@ public class UniversityServlet extends HttpServlet {
 		Group group = new Group();
 		try {
 			group.setGroupNumber(request.getParameter("groupNumber"));
-		universityService.addNew(group);
-
-		} catch (DaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        try {
+			universityService.addNew(group);
+			RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
 			request.setAttribute("groups", universityService.getAll());
+			view.forward(request, response);
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        view.forward(request, response);
 	}
 }

@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.domain.Classroom;
 import com.university.domain.Group;
-import com.university.domain.Lecturer;
-import com.university.domain.Lesson;
 import com.university.domain.Student;
 import com.university.exception.DaoException;
 import com.university.service.AbstaractService;
@@ -30,7 +27,6 @@ public class GroupServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="startForward";
         String action = request.getParameter("action");
-
 
         if (action.equalsIgnoreCase("delete")){
             try {
@@ -57,7 +53,6 @@ public class GroupServlet extends HttpServlet {
 	            forward = LIST_USER;
 	            request.setAttribute("students", studentService.getAll());
 	            request.setAttribute("groups", groupService.getAll());
-
         	} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				e.printStackTrace();
@@ -74,17 +69,14 @@ public class GroupServlet extends HttpServlet {
         }
 
         request.getRequestDispatcher(forward).forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
 
-
 		try {
 			Student student = new Student();
-
 			student.setFirstName(request.getParameter("firstName"));
 			student.setLastName(request.getParameter("lastName"));
 			student.setContactInformation(request.getParameter("contactInformation"));
@@ -97,7 +89,6 @@ public class GroupServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
 			request.setAttribute("students", studentService.getAll());
@@ -107,6 +98,6 @@ public class GroupServlet extends HttpServlet {
 		}
         view.forward(request, response);
 	}
-	}
+}
 
 

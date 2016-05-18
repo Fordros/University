@@ -19,6 +19,7 @@
 
 </head>
 <body style="height: 100%">
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -31,7 +32,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/university">Home</a></li>
+                <li ><a href="/university">Home</a></li>
                 <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
 			        <span class="caret"></span></a>
@@ -82,14 +83,41 @@
         </div>
         <div class="col-sm-10 content">
 
+            <div class="row box">
 
-
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                        <caption class="text-center">Расписание занятий</caption>
+                        <thead>
+                        <tr class="info">
+                            <th style="vertical-align: middle"><h5 class="text-center">Номер группы</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">ФИО преподавателя</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Номер аудитории</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Тип занятия</h5></th>
+                            <th style="vertical-align: middle"><h5 class="text-center">Дата и время</h5></th>
+                           	<th style="vertical-align: middle"><h5 class="text-center">Действие</h5></th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="l" items="${lessons}">
+                        <tbody>
+                            <tr>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.group.groupNumber}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.lecturer.lastName}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.classroom.number}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.studiesTypes}</h6></th>
+                                <th style="vertical-align: middle"><h6 class="text-center">${l.lessonTime}</h6></th>
+                              	<td style="vertical-align: middle"><h6 class="text-center"><a href="lesson?action=delete&id=<c:out value="${l.id}"/>">Удалить</a></h6></td>
+                           </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+            </div>
         </div>
         <div class="col-sm-1 sidenav">
 
         </div>
     </div>
 </div>
+
 
 <footer class="container-fluid text-center">
     <p>by Fordros</p>

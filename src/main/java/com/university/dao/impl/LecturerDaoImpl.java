@@ -3,6 +3,7 @@ package com.university.dao.impl;
 import com.university.dao.AbstractJDBCDao;
 import com.university.dao.DaoFactory;
 import com.university.domain.Lecturer;
+import com.university.domain.Lesson;
 import com.university.exception.DaoException;
 
 import java.sql.Connection;

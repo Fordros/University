@@ -19,6 +19,7 @@
 
 </head>
 <body style="height: 100%">
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -31,7 +32,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/university">Home</a></li>
+                <li ><a href="/university">Home</a></li>
                 <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/un?action=">Groups
 			        <span class="caret"></span></a>
@@ -46,16 +47,14 @@
 			        <ul class="dropdown-menu">
 			        	<li><a href="group?action=">Все студенты</a></li>
 			          	<li><a href="group?action=insert">Добавить студента</a></li>
-			          	<li><a href="lesson?action=find&for=2">Поиск расписания</a></li>
 			        </ul>
 			     </li>
-			    <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer">Lecturer
+			     <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer?action=">Lecturer
 			        <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
 			        	<li><a href="lecturer?action=">Все преподы</a></li>
 			          	<li><a href="lecturer?action=insert">Добавить препода</a></li>
-			          	<li><a href="lesson?action=find&for=1">Поиск расписания</a></li>
 			        </ul>
 			     </li>
 			     <li class="dropdown">
@@ -82,8 +81,48 @@
         </div>
         <div class="col-sm-10 content">
 
+            <div class="row box">
+            <h4 class="text-center">Добавить занятие</h4>
+            <form  id="jform" class="form-inline" method="post" action="lesson" name="frmAddLesson">
 
+                <div class="form-group">
+                    <select class="form-control" id="optionGroup" name="optionGroup">
+						<c:forEach var="g" items="${groups}">
+							<option value ="<c:out value="${g.id}"/>">${g.groupNumber}</option>
+						</c:forEach>
+					</select>
+                </div>
+                <div class="form-group">
+                	<select class="form-control" id="optionLecturer" name="optionLecturer">
+						<c:forEach var="l" items="${lecturers}">
+							<option value ="<c:out value="${l.id}"/>">${l.lastName}</option>
+						</c:forEach>
+					</select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="optionClassroom" name="optionClassroom">
+						<c:forEach var="c" items="${classrooms}">
+							<option value ="<c:out value="${c.id}"/>">${c.number}</option>
+						</c:forEach>
+					</select>
+                </div>
+				<div class="form-group">
+					<select class="form-control" id="stydiesType" name="studiesType">
+						  	<option value ="LECTURE">LECTURE</option>
+						  	<option value ="TUTORIAL">TUTORIAL</option>
+						  	<option value ="SEMINAR">SEMINAR</option>
+						  	<option value ="LABORATORY_CLASS">LABORATORY_CLASS</option>
+					</select>
+			   </div>
+			   <div class="form-group">
+                    <input type="datetime-local" class="form-control" name="lessonTime" id="lessonTime" placeholder="Время занятия"/>
+                </div>
+				<div class="form-group">
+                    <input class="form-control" class="btn btn-default" type="submit"  name="addLesson" id="send" value="Добавить" >
+                </div>
+            </form>
 
+            </div>
         </div>
         <div class="col-sm-1 sidenav">
 

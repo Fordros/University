@@ -19,13 +19,12 @@ public class LecturerServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	private static String INSERT_OR_EDIT = "/lecturer.jsp";
     private static String LIST_USER = "/addLecturer.jsp";
-    
+
     AbstaractService service = new AbstaractService(Lecturer.class);
-    
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="";
         String action = request.getParameter("action");
-
         if (action.equalsIgnoreCase("delete")){
             try {
             	int id = Integer.parseInt(request.getParameter("id"));
@@ -64,15 +63,12 @@ public class LecturerServlet extends HttpServlet{
 				e.printStackTrace();
 			}
         }
-
         request.getRequestDispatcher(forward).forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
-
 		Lecturer lecturer = new Lecturer();
 		try {
 			lecturer.setFirstName(request.getParameter("firstName"));
@@ -83,7 +79,7 @@ public class LecturerServlet extends HttpServlet{
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-		
+
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
         try {
 			request.setAttribute("lecturers", service.getAll());
@@ -92,5 +88,5 @@ public class LecturerServlet extends HttpServlet{
 		}
         view.forward(request, response);
 	}
-    
+
 }

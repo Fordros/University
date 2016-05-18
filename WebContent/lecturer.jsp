@@ -47,14 +47,16 @@
 			        <ul class="dropdown-menu">
 			        	<li><a href="group?action=">Все студенты</a></li>
 			          	<li><a href="group?action=insert">Добавить студента</a></li>
+			          	<li><a href="lesson?action=find&for=2">Поиск расписания</a></li>
 			        </ul>
 			     </li>
-			     <li class="dropdown">
+			    <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="/university/lecturer">Lecturer
 			        <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
 			        	<li><a href="lecturer?action=">Все преподы</a></li>
 			          	<li><a href="lecturer?action=insert">Добавить препода</a></li>
+			          	<li><a href="lesson?action=find&for=1">Поиск расписания</a></li>
 			        </ul>
 			     </li>
 			     <li class="dropdown">

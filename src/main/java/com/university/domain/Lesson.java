@@ -9,7 +9,7 @@ import java.util.Date;
 public class Lesson implements Identified<Integer> {
     private Integer id;
     private Group group;
-    private Lecturer professor;
+    private Lecturer lecturer;
     private Classroom classroom;
     private Date lessonTime;
     private String studiesTypes;
@@ -20,9 +20,9 @@ public class Lesson implements Identified<Integer> {
 
 
 
-	public Lesson(Group group, Lecturer professor, Classroom classroom, Date lessonTime, String studiesTypes){
+	public Lesson(Group group, Lecturer lecturer, Classroom classroom, Date lessonTime, String studiesTypes){
         this.setGroup(group);
-        this.setProfessor(professor);
+        this.setLecturer(lecturer);
         this.setClassroom(classroom);
         this.setLessonTime(lessonTime);
         this.setStudiesTypes(studiesTypes);
@@ -45,15 +45,20 @@ public class Lesson implements Identified<Integer> {
         this.group = group;
     }
 
-    public Lecturer getProfessor() {
-        return professor;
-    }
+   
+    public Lecturer getLecturer() {
+		return lecturer;
+	}
 
-    public void setProfessor(Lecturer professor) {
-        this.professor = professor;
-    }
 
-    public Classroom getClassroom() {
+
+	public void setLecturer(Lecturer lecturer) {
+		this.lecturer = lecturer;
+	}
+
+
+
+	public Classroom getClassroom() {
         return classroom;
     }
 
@@ -82,7 +87,7 @@ public class Lesson implements Identified<Integer> {
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         return "Lesson{" +
                 "group='" + group.getGroupNumber() + '\'' +
-                ", professor='" + professor.getFirstName() + '\'' +
+                ", lecturer='" + lecturer.getFirstName() + '\'' +
                 ", classroom='" + classroom.getNumber() + '\'' +
                 ", lessonTime='" + format.format(lessonTime) + '\'' +
                 '}' + '\n';
