@@ -2,9 +2,6 @@ package com.university.dao;
 
 import com.university.exception.DaoException;
 
-
-
-
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

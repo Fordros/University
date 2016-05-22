@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.domain.Classroom;
-import com.university.domain.Group;
-import com.university.domain.Lecturer;
-import com.university.domain.Lesson;
-import com.university.domain.Student;
+import com.university.domain.entity.Classroom;
+import com.university.domain.entity.Group;
+import com.university.domain.entity.Lecturer;
+import com.university.domain.entity.Lesson;
+import com.university.domain.entity.Student;
 import com.university.exception.DaoException;
-import com.university.service.AbstaractService;
+import com.university.domain.service.AbstaractService;
 
 @WebServlet("/timetable")
 public class TimetableServlet extends HttpServlet{

@@ -2,10 +2,10 @@ package com.university.dao.impl;
 
 import com.university.dao.AbstractJDBCDao;
 import com.university.dao.DaoFactory;
-import com.university.domain.Classroom;
-import com.university.domain.Group;
-import com.university.domain.Lecturer;
-import com.university.domain.Lesson;
+import com.university.domain.entity.Classroom;
+import com.university.domain.entity.Group;
+import com.university.domain.entity.Lecturer;
+import com.university.domain.entity.Lesson;
 import com.university.exception.DaoException;
 
 import java.sql.Connection;

@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.domain.Group;
+import com.university.domain.entity.Group;
 import com.university.exception.DaoException;
-import com.university.service.AbstaractService;
+import com.university.domain.service.AbstaractService;
 
 @WebServlet("/un")
 public class UniversityServlet extends HttpServlet {

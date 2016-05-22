@@ -1,4 +1,4 @@
-package com.university.domain;
+package com.university.domain.entity;
 
 
 public enum LecturerQualification {

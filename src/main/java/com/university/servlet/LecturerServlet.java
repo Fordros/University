@@ -10,17 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.domain.Lecturer;
+import org.apache.log4j.Logger;
+
+import com.university.domain.entity.Lecturer;
 import com.university.exception.DaoException;
-import com.university.service.AbstaractService;
+import com.university.domain.service.AbstaractService;
 
 @WebServlet("/lecturer")
 public class LecturerServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	private static String INSERT_OR_EDIT = "/lecturer.jsp";
     private static String LIST_USER = "/addLecturer.jsp";
-
-    AbstaractService service = new AbstaractService(Lecturer.class);
+    final static Logger logger = Logger.getLogger(GroupServlet.class);
+    AbstaractService service = new AbstaractService(LecturerServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward="";
@@ -33,7 +35,7 @@ public class LecturerServlet extends HttpServlet{
 				request.setAttribute("lecturers", service.getAll());
 			} catch (DaoException e) {
 				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
+				logger.error("Error when to try to remove a student", e);
 			}
         } else if (action.equalsIgnoreCase("find")){
         	try {

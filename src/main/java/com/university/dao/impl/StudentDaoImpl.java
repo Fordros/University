@@ -3,8 +3,8 @@ package com.university.dao.impl;
 
 import com.university.dao.AbstractJDBCDao;
 import com.university.dao.DaoFactory;
-import com.university.domain.Group;
-import com.university.domain.Student;
+import com.university.domain.entity.Group;
+import com.university.domain.entity.Student;
 import com.university.exception.DaoException;
 
 import java.sql.Connection;

@@ -1,15 +1,11 @@
-package com.university.service;
+package com.university.domain.service;
 
-import java.io.IOException;
+
 import java.util.List;
-
-import javax.servlet.ServletException;
 
 import com.university.dao.DaoFactory;
 import com.university.dao.Identified;
 import com.university.dao.impl.DaoFactoryImpl;
-import com.university.domain.Group;
-import com.university.domain.Student;
 import com.university.exception.DaoException;
 
 public class AbstaractService<T> {

@@ -1,11 +1,8 @@
 package com.univestity.entity;
 
-import com.university.domain.Group;
-import com.university.domain.Student;
+import com.university.domain.entity.Group;
+import com.university.domain.entity.Student;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class GroupTest {

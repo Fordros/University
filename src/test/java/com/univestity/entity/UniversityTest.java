@@ -3,7 +3,8 @@ package com.univestity.entity;
 
 import java.util.GregorianCalendar;
 import java.util.List;
-import com.university.domain.*;
+
+import com.university.domain.entity.*;
 import org.junit.Test;
 
 

@@ -2,28 +2,39 @@ package com.university.dao.impl;
 
 import com.university.dao.DaoFactory;
 import com.university.dao.GenericDao;
-import com.university.domain.*;
+import com.university.domain.entity.*;
 import com.university.exception.DaoException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+
 public class DaoFactoryImpl implements DaoFactory<Connection> {
 
-    private String user = "postgres";
-    private String password = "sa62298";
-    private String url = "jdbc:postgresql://localhost:5432/postgres";
-    private String driver = "org.postgresql.Driver";
     private Map<Class, DaoCreator> creators;
-
-
+    private InitialContext ctx;
+    
+    //Statement s = c.createStatement();
+    
     public Connection getConnection() throws DaoException {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(url, user, password);
+			try {
+				Context context = (Context) ctx.lookup("java:comp/env");
+				DataSource ds = (DataSource)context.lookup("jdbc/root");
+				connection = ds.getConnection();
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
         } catch (SQLException e) {
             throw new DaoException("Connection failed ",e);
         }
@@ -40,13 +51,14 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
         return creator.create(connection);
     }
 
-    public DaoFactoryImpl() {
-        try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+    public DaoFactoryImpl(){
+    	try {
+			ctx = new InitialContext();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         creators = new HashMap<Class, DaoCreator>();
         creators.put(Group.class, new DaoCreator<Connection>() {
             @Override

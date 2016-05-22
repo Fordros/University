@@ -1,4 +1,4 @@
-package com.university.domain;
+package com.university.domain.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
