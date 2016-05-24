@@ -13,19 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.university.domain.entity.Classroom;
 import com.university.domain.entity.Group;
 import com.university.domain.entity.Lecturer;
 import com.university.domain.entity.Lesson;
 import com.university.domain.entity.Student;
-import com.university.exception.DaoException;
 import com.university.domain.service.AbstaractService;
 
 @WebServlet("/timetable")
 public class TimetableServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
     private static String LIST_USER = "/lesson.jsp";
-
+    final static Logger logger = Logger.getLogger(TimetableServlet.class);
+    
     AbstaractService lessonService = new AbstaractService(Lesson.class);
     AbstaractService studentService = new AbstaractService(Student.class);
 	AbstaractService groupService = new AbstaractService(Group.class);
@@ -39,38 +41,36 @@ public class TimetableServlet extends HttpServlet{
 		Group group = null;
 		Lecturer lecturer = null;
 		Date today = new Date();
-		try {
-			List<Lesson> lessons = lessonService.getAll();
-			List<Lesson> result = new ArrayList<Lesson>();
-			String lessonTimeString = request.getParameter("lessonTime");
-            Date lessonTime = null;
+		List<Lesson> lessons = lessonService.getAll();
+		List<Lesson> result = new ArrayList<Lesson>();
+		String lessonTimeString = request.getParameter("lessonTime");
+		Date lessonTime = null;
 
-			try {
-				lessonTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(lessonTimeString);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			String[] optionTimetable = request.getParameterValues("optionTimetable");
-			int typesearch = Integer.parseInt(request.getParameter("typesearch"));
-			if(typesearch == 2){
-				group = (Group) groupService.findById(Integer.parseInt(optionTimetable[0]));
-				for ( Lesson l : lessons) {
-		            if (l.getGroup().getGroupNumber().equals(group.getGroupNumber()) && l.getLessonTime().after(today) && l.getLessonTime().before(lessonTime)){
-		                result.add(l);
-		            }
-		        }
-			}else{
-				lecturer = (Lecturer) lecturerService.findById(Integer.parseInt(optionTimetable[0]));
-				for ( Lesson l : lessons) {
-		            if (l.getLecturer().getId().equals(lecturer.getId()) && l.getLessonTime().after(today) && l.getLessonTime().before(lessonTime)){
-		                result.add(l);
-		            }
-		        }
-			}
-	        request.setAttribute("lessons", result);
-		} catch (DaoException e) {
-			e.printStackTrace();
+		try {
+			lessonTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(lessonTimeString);
+		} catch (ParseException e) {
+			logger.error("Error to parse lessontime", e);
 		}
+		String[] optionTimetable = request.getParameterValues("optionTimetable");
+		int typesearch = Integer.parseInt(request.getParameter("typesearch"));
+		if(typesearch == 2){
+			logger.info("Selecting timetable for the student");
+			group = (Group) groupService.findById(Integer.parseInt(optionTimetable[0]));
+			for ( Lesson l : lessons) {
+		        if (l.getGroup().getGroupNumber().equals(group.getGroupNumber()) && l.getLessonTime().after(today) && l.getLessonTime().before(lessonTime)){
+		            result.add(l);
+		        }
+		    }
+		}else{
+			logger.info("Selecting timetable for the lecturer");
+			lecturer = (Lecturer) lecturerService.findById(Integer.parseInt(optionTimetable[0]));
+			for ( Lesson l : lessons) {
+		        if (l.getLecturer().getId().equals(lecturer.getId()) && l.getLessonTime().after(today) && l.getLessonTime().before(lessonTime)){
+		            result.add(l);
+		        }
+		    }
+		}
+		request.setAttribute("lessons", result);
 
         request.getRequestDispatcher(LIST_USER).forward(request, response);
 	}

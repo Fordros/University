@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.university.domain.entity.Lecturer;
-import com.university.exception.DaoException;
 import com.university.domain.service.AbstaractService;
 
 @WebServlet("/lecturer")
@@ -28,42 +27,24 @@ public class LecturerServlet extends HttpServlet{
 		String forward="";
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("delete")){
-            try {
-            	int id = Integer.parseInt(request.getParameter("id"));
-            	service.delete(id);
-                forward = INSERT_OR_EDIT;
-				request.setAttribute("lecturers", service.getAll());
-			} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				logger.error("Error when to try to remove a student", e);
-			}
+            int id = Integer.parseInt(request.getParameter("id"));
+            logger.info("Delete lecturer by id" + id);
+			service.delete(id);
+			forward = INSERT_OR_EDIT;
+			request.setAttribute("lecturers", service.getAll());
         } else if (action.equalsIgnoreCase("find")){
-        	try {
-	            forward = INSERT_OR_EDIT;
-	            int id = Integer.parseInt(request.getParameter("id"));
-	            Lecturer lecturer = (Lecturer) service.findById(id);
-	            request.setAttribute("lecturer", lecturer);
-        	} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
-			}
+        	forward = INSERT_OR_EDIT;
+			int id = Integer.parseInt(request.getParameter("id"));
+			logger.info("Find lecturer by id" + id);
+			Lecturer lecturer = (Lecturer) service.findById(id);
+			request.setAttribute("lecturer", lecturer);
         } else if (action.equalsIgnoreCase("insert")){
-        	try {
-	            forward = LIST_USER;
-	            request.setAttribute("lecturers", service.getAll());
-        	} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
-        	}
+        	forward = LIST_USER;
+			request.setAttribute("lecturers", service.getAll());
         } else {
-        	 try {
-            forward = INSERT_OR_EDIT;
+        	 forward = INSERT_OR_EDIT;
 				List<Lecturer> lecturers = service.getAll();
 				request.setAttribute("lecturers", lecturers);
-			} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				e.printStackTrace();
-			}
         }
         request.getRequestDispatcher(forward).forward(request, response);
 	}
@@ -71,23 +52,16 @@ public class LecturerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding ("UTF-8");
+		logger.info("Add new lecturer");
 		Lecturer lecturer = new Lecturer();
-		try {
-			lecturer.setFirstName(request.getParameter("firstName"));
-			lecturer.setLastName(request.getParameter("lastName"));
-			lecturer.setContactInformation(request.getParameter("contactInformation"));
-			lecturer.setQualification(request.getParameter("qualification"));
-			service.addNew(lecturer);
-		} catch (DaoException e) {
-			e.printStackTrace();
-		}
+		lecturer.setFirstName(request.getParameter("firstName"));
+		lecturer.setLastName(request.getParameter("lastName"));
+		lecturer.setContactInformation(request.getParameter("contactInformation"));
+		lecturer.setQualification(request.getParameter("qualification"));
+		service.addNew(lecturer);
 
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        try {
-			request.setAttribute("lecturers", service.getAll());
-		} catch (DaoException e) {
-			e.printStackTrace();
-		}
+        request.setAttribute("lecturers", service.getAll());
         view.forward(request, response);
 	}
 

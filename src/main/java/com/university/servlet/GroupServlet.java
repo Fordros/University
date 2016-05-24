@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 
 import com.university.domain.entity.Group;
 import com.university.domain.entity.Student;
-import com.university.exception.DaoException;
 import com.university.domain.service.AbstaractService;
 
 @WebServlet("/group")
@@ -31,43 +30,25 @@ public class GroupServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action.equalsIgnoreCase("delete")){
-            try {
-            	int id = Integer.parseInt(request.getParameter("id"));
-            	studentService.delete(id);
-                forward = INSERT_OR_EDIT;
-				request.setAttribute("students", studentService.getAll());
-			} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				logger.error("Error when to try to remove a student", e);
-			}
+            int id = Integer.parseInt(request.getParameter("id"));
+            logger.info("Delete student by id" + id);
+			studentService.delete(id);
+			forward = INSERT_OR_EDIT;
+			request.setAttribute("students", studentService.getAll());
         } else if (action.equalsIgnoreCase("find")){
-        	try {
-	            forward = INSERT_OR_EDIT;
-	            int id = Integer.parseInt(request.getParameter("id"));
-	            Student student = (Student) studentService.findById(id);
-	            request.setAttribute("students", student);
-        	} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				logger.error("Error when trying to find a student", e);
-			}
+        	forward = INSERT_OR_EDIT;
+			int id = Integer.parseInt(request.getParameter("id"));
+			logger.info("Find student by id" + id);
+			Student student = (Student) studentService.findById(id);
+			request.setAttribute("students", student);
         } else if (action.equalsIgnoreCase("insert")){
-        	try {
-	            forward = LIST_USER;
-	            request.setAttribute("students", studentService.getAll());
-	            request.setAttribute("groups", groupService.getAll());
-        	} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				logger.error("Error when to receive the students and groups lists", e);
-        	}
+        	forward = LIST_USER;
+			request.setAttribute("students", studentService.getAll());
+			request.setAttribute("groups", groupService.getAll());
         } else {
-        	 try {
-            forward = INSERT_OR_EDIT;
+        	 forward = INSERT_OR_EDIT;
 				List<Student> students = studentService.getAll();
 				request.setAttribute("students", students);
-			} catch (DaoException e) {
-				request.getRequestDispatcher("error.jsp").forward(request, response);
-				logger.error("Error when to receive the students list", e);
-			}
         }
 
         request.getRequestDispatcher(forward).forward(request, response);
@@ -86,16 +67,13 @@ public class GroupServlet extends HttpServlet {
 			Group group;
 			group = (Group) groupService.findById(Integer.parseInt(option[0]));
 			student.setGroup(group);
+			logger.info("Add new student in group number" + group.getGroupNumber());
 			studentService.addNew(student);
-		} catch (NumberFormatException | DaoException e) {
+		} catch (NumberFormatException e) {
 			logger.error("Error when to add a new student", e);
 		}
         RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        try {
-			request.setAttribute("students", studentService.getAll());
-		} catch (DaoException e) {
-			logger.error("Error when to receive the students list", e);
-		}
+        request.setAttribute("students", studentService.getAll());
         view.forward(request, response);
 	}
 }

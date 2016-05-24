@@ -10,21 +10,20 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
 
 
 public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     private Map<Class, DaoCreator> creators;
     private InitialContext ctx;
-    
-    //Statement s = c.createStatement();
-    
+    final static Logger logger = Logger.getLogger(DaoFactoryImpl.class);
+        
     public Connection getConnection() throws DaoException {
         Connection connection = null;
         try {
@@ -33,10 +32,11 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 				DataSource ds = (DataSource)context.lookup("jdbc/root");
 				connection = ds.getConnection();
 			} catch (NamingException e) {
-				e.printStackTrace();
+				logger.error("NamingException", e);
 			}
         } catch (SQLException e) {
-            throw new DaoException("Connection failed ",e);
+        	logger.error("Connection failed ", e);
+            throw new DaoException("Connection failed ", e);
         }
         return  connection;
     }
@@ -46,6 +46,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
         DaoCreator creator = creators.get(dtoClass);
         Connection connection = getConnection();
         if (creator == null) {
+        	logger.error("Dao object for " + dtoClass + " not found.");
             throw new DaoException("Dao object for " + dtoClass + " not found.");
         }
         return creator.create(connection);
@@ -55,8 +56,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
     	try {
 			ctx = new InitialContext();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("NamingException", e);
 		}
         
         creators = new HashMap<Class, DaoCreator>();

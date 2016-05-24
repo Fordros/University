@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements GenericDao<T, PK> {
 
@@ -20,7 +22,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
     public abstract String getUpdateQuery();
     public abstract String getDeleteQuery();
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
-
+    final static Logger logger = Logger.getLogger(AbstractJDBCDao.class);
     /**
      * Sets insert query arguments in accordance with field value object
      */
@@ -63,6 +65,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
 					connection.close();
 				}
 			} catch (SQLException e) {
+				logger.error("Error occured while closing connection, statement, resultSet", e);
 				throw new DaoException("Error occured while closing connection, statement, resultSet", e);
 			}
 		}
@@ -99,6 +102,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
 					connection.close();
 				}
 			} catch (SQLException e) {
+				logger.error("Error occured while closing connection, statement, resultSet", e);
 				throw new DaoException("Error occured while closing connection, statement, resultSet", e);
 			}
 		}
@@ -108,6 +112,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
     @Override
     public T persist(T object) throws DaoException {
         if (object.getId() != null) {
+        	logger.error("Object is already persist." + object.getClass().getName());
             throw new DaoException("Object is already persist.");
         }
         saveDependence(object);
@@ -149,6 +154,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
 					connection.close();
 				}
 			} catch (SQLException e) {
+				logger.error("Error occured while closing connection, statement, resultSet", e);
 				throw new DaoException("Error occured while closing connection, statement, resultSet", e);
 			}
 		}
@@ -161,7 +167,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
         String sql = getUpdateQuery();
         try {
         	statement = connection.prepareStatement(sql);
-            prepareStatementForUpdate(statement, object); // заполнение аргументов запроса оставляем на совесть потомков
+            prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DaoException("On update modify more then 1 record: " + count);
@@ -180,6 +186,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
 					connection.close();
 				}
 			} catch (SQLException e) {
+				logger.error("Error occured while closing connection, statement, resultSet", e);
 				throw new DaoException("Error occured while closing connection, statement, resultSet", e);
 			}
 		}
@@ -197,6 +204,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
             }
             int count = statement.executeUpdate();
             if (count != 1) {
+            	logger.error("On delete modify more then 1 record: " + count);
                 throw new DaoException("On delete modify more then 1 record: " + count);
             }
         } catch (Exception e) {
@@ -213,6 +221,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
 					connection.close();
 				}
 			} catch (SQLException e) {
+				logger.error("Error occured while closing connection, statement, resultSet", e);
 				throw new DaoException("Error occured while closing connection, statement, resultSet", e);
 			}
 		}
@@ -248,6 +257,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK > implements 
                     m.updateDependence(owner, connection);
                 }
             } catch (Exception e) {
+            	logger.error("Exception on save dependence in relation " + m + ".", e);
                 throw new DaoException("Exception on save dependence in relation " + m + ".", e);
             }
         }
