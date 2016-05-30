@@ -25,8 +25,6 @@ public class ContextListener implements ServletContextListener {
         if(file != null) {
         	PropertyConfigurator.configure(prefix+file);
           	System.out.println("Log4J Logging started for application: " + prefix+file);
-        }else{
-        	System.out.println("Log4J Is not configured for application Application: " + prefix + file);
         }
 
 

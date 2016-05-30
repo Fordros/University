@@ -3,7 +3,6 @@ package com.university.domain.entity;
 
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -99,16 +98,5 @@ public class Lesson  implements Serializable  {
 		this.studiesTypes = studiesTypes;
 	}
 
-   /* @Override
-    public String toString(){
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        return "Lesson{" +
-                "group='" + group.getGroupNumber() + '\'' +
-                ", lecturer='" + lecturer.getFirstName() + '\'' +
-                ", classroom='" + classroom.getNumber() + '\'' +
-                ", lessonTime='" + format.format(lessonTime) + '\'' +
-                '}' + '\n';
-    }
-
-*/
+   
 }

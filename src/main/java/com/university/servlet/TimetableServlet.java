@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.university.domain.entity.Student;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -57,7 +56,6 @@ public class TimetableServlet{
     	Group group = null;
 		Lecturer lecturer = null;
 		Date today = new Date();
-		Date lessonTime = null;
 		List<Lesson> lessons = lessonService.getAll();
 		List<Lesson> result = new ArrayList<Lesson>();
 		
