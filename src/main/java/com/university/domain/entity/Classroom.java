@@ -1,9 +1,16 @@
 package com.university.domain.entity;
 
-import com.university.dao.Identified;
+import java.io.Serializable;
+
+import javax.persistence.*;
 
 
-public class  Classroom implements Identified<Integer> {
+@Entity
+@Table(name = "classroom")
+public class  Classroom implements Serializable  {
+	
+
+	private static final long serialVersionUID = 1L;
     private Integer id;
     private String number;
     private String address;
@@ -16,7 +23,10 @@ public class  Classroom implements Identified<Integer> {
         this.setAddress(address);
         this.setNumber(number);
     }
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false, insertable = true)
     public Integer getId() {
         return id;
     }
@@ -25,6 +35,7 @@ public class  Classroom implements Identified<Integer> {
         this.id = id;
     }
 
+    @Column(name = "NUMBER", unique = true, nullable = false, length = 10)
     public String getNumber() {
         return number;
     }
@@ -33,6 +44,7 @@ public class  Classroom implements Identified<Integer> {
         this.number = number;
     }
 
+    @Column(name = "ADDRESS", unique = true, nullable = false, length = 10)
     public String getAddress() {
         return address;
     }

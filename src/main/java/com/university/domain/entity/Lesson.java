@@ -1,12 +1,19 @@
 package com.university.domain.entity;
 
-import com.university.dao.Identified;
 
+
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.*;
 
-public class Lesson implements Identified<Integer> {
+@Entity
+@Table(name = "lesson")
+public class Lesson  implements Serializable  {
+
+
+	private static final long serialVersionUID = 1L;
     private Integer id;
     private Group group;
     private Lecturer lecturer;
@@ -28,7 +35,10 @@ public class Lesson implements Identified<Integer> {
         this.setStudiesTypes(studiesTypes);
     }
 
-    @Override
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false, insertable = true)
     public Integer getId() {
         return id;
     }
@@ -37,6 +47,8 @@ public class Lesson implements Identified<Integer> {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_GROUP", nullable = false)
     public Group getGroup() {
         return group;
     }
@@ -45,7 +57,8 @@ public class Lesson implements Identified<Integer> {
         this.group = group;
     }
 
-   
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_LECTURER", nullable = false)
     public Lecturer getLecturer() {
 		return lecturer;
 	}
@@ -57,7 +70,8 @@ public class Lesson implements Identified<Integer> {
 	}
 
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_CLASSROOM", nullable = false)
 	public Classroom getClassroom() {
         return classroom;
     }
@@ -66,6 +80,8 @@ public class Lesson implements Identified<Integer> {
         this.classroom = classroom;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "LESSONTIME", unique = true, nullable = false)
     public Date getLessonTime() {
 		return lessonTime;
 	}
@@ -74,6 +90,7 @@ public class Lesson implements Identified<Integer> {
 		this.lessonTime = lessonTime;
 	}
 
+	@Column(name = "STUDIESTYPES", unique = true, nullable = false, length = 17)
 	public String getStudiesTypes() {
 		return studiesTypes;
 	}
@@ -82,7 +99,7 @@ public class Lesson implements Identified<Integer> {
 		this.studiesTypes = studiesTypes;
 	}
 
-    @Override
+   /* @Override
     public String toString(){
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         return "Lesson{" +
@@ -93,5 +110,5 @@ public class Lesson implements Identified<Integer> {
                 '}' + '\n';
     }
 
-
+*/
 }

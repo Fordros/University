@@ -3,27 +3,23 @@ package com.university.dao;
 
 import com.university.exception.DaoException;
 
-
-
+import java.io.Serializable;
 import java.util.List;
+
 
 /**
  * The unified state of persistent object management interface
  */
-public interface GenericDao<T extends Identified<PK>, PK> {
+public interface GenericDao<T, ID extends Serializable> {
 
+	public Integer save(T entity) throws DaoException;
 
-    public T create() throws DaoException;
+    public T merge(T entity) throws DaoException;
 
-    //public T persist(Class<T> dtoClass)  throws DaoException;
+    public void delete(T entity) throws DaoException;
 
-    public void update(T object) throws DaoException;
+    public List findAll(Class clazz) throws DaoException;
 
-    public void delete(T object) throws DaoException;
+    public T findByID(Integer id) throws DaoException;
 
-    public List<T> getAll() throws DaoException;
-
-    public T getByPK(Integer key) throws DaoException;
-
-	T persist(T object) throws DaoException;
 }

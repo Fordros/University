@@ -1,81 +1,74 @@
 package com.university.servlet;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.university.domain.entity.Group;
-import com.university.domain.entity.Student;
-import com.university.domain.service.AbstaractService;
+import com.university.domain.service.GroupService;
 
-@WebServlet("/group")
-public class GroupServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static String INSERT_OR_EDIT = "/group.jsp";
-    private static String LIST_USER = "/addStudent.jsp";
-    final static Logger logger = Logger.getLogger(GroupServlet.class);
-    	AbstaractService studentService = new AbstaractService(Student.class);
-    	AbstaractService groupService = new AbstaractService(Group.class);
+@Controller
+public class GroupServlet {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String forward="startForward";
-        String action = request.getParameter("action");
+	final static Logger logger = Logger.getLogger(GroupServlet.class);
 
-        if (action.equalsIgnoreCase("delete")){
-            int id = Integer.parseInt(request.getParameter("id"));
-            logger.info("Delete student by id" + id);
-			studentService.delete(id);
-			forward = INSERT_OR_EDIT;
-			request.setAttribute("students", studentService.getAll());
-        } else if (action.equalsIgnoreCase("find")){
-        	forward = INSERT_OR_EDIT;
-			int id = Integer.parseInt(request.getParameter("id"));
-			logger.info("Find student by id" + id);
-			Student student = (Student) studentService.findById(id);
-			request.setAttribute("students", student);
-        } else if (action.equalsIgnoreCase("insert")){
-        	forward = LIST_USER;
-			request.setAttribute("students", studentService.getAll());
-			request.setAttribute("groups", groupService.getAll());
-        } else {
-        	 forward = INSERT_OR_EDIT;
-				List<Student> students = studentService.getAll();
-				request.setAttribute("students", students);
-        }
+	@Autowired
+	private GroupService groupService;
 
-        request.getRequestDispatcher(forward).forward(request, response);
+	@RequestMapping("addGroup")
+	public ModelAndView addGroup(@ModelAttribute Group group) {
+		logger.info("Creating group. Data: " + group);
+		return new ModelAndView("groupForm");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding ("UTF-8");
+	@RequestMapping("editGroup")
+	public ModelAndView editGroup(@RequestParam Integer id,
+			@ModelAttribute Group group) {
+		logger.info("Updating the Group for the Id " + id);
+		group  = groupService.findById(id);
+		return new ModelAndView("groupForm", "group", group);
+	}
 
-		try {
-			Student student = new Student();
-			student.setFirstName(request.getParameter("firstName"));
-			student.setLastName(request.getParameter("lastName"));
-			student.setContactInformation(request.getParameter("contactInformation"));
-			String[] option = request.getParameterValues("exampleSelect1");
-			Group group;
-			group = (Group) groupService.findById(Integer.parseInt(option[0]));
-			student.setGroup(group);
-			logger.info("Add new student in group number" + group.getGroupNumber());
-			studentService.addNew(student);
-		} catch (NumberFormatException e) {
-			logger.error("Error when to add a new student", e);
+	@RequestMapping("saveGroup")
+	public ModelAndView saveGroup(@ModelAttribute Group group) {
+		logger.info("Saving the group. Data : " + group);
+		if (group.getId() == null) { // if group id is 0 then creating the
+									// group other updating the group
+			groupService.addNew(group);
+		} else {
+			groupService.update(group);
 		}
-        RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        request.setAttribute("students", studentService.getAll());
-        view.forward(request, response);
+		return new ModelAndView("redirect:getAllGroups");
 	}
+
+	@RequestMapping("deleteGroup")
+    public ModelAndView deleteGroup(@RequestParam Integer id) {
+        logger.info("Deleting the group. Id : "+id);
+        Group group = groupService.findById(id);
+        groupService.delete(group);
+        return new ModelAndView("redirect:getAllGroups");
+    }
+
+    @RequestMapping(value = {"getAllGroups", "/"})
+    public ModelAndView getAllGroups() {
+        logger.info("Getting the all groups.");
+        List<Group> groups = groupService.getAll();
+        return new ModelAndView("groupList", "groups", groups);
+    }
+
+    @RequestMapping("searchGroup")
+    public ModelAndView searchGroup(@RequestParam("searchName") String groupNumber) {
+        logger.info("Searching the group. Group Names: "+groupNumber);
+        Group group = groupService.findByGroupNumber(groupNumber);
+        return new ModelAndView("groupList", "group", group);
+    }
+
+
 }
-
-

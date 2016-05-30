@@ -1,68 +1,76 @@
 package com.university.servlet;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.university.domain.entity.Lecturer;
-import com.university.domain.service.AbstaractService;
+import com.university.domain.service.LecturerService;
 
-@WebServlet("/lecturer")
-public class LecturerServlet extends HttpServlet{
-	private static final long serialVersionUID = 1L;
-	private static String INSERT_OR_EDIT = "/lecturer.jsp";
-    private static String LIST_USER = "/addLecturer.jsp";
+
+@Controller
+public class LecturerServlet{
+
     final static Logger logger = Logger.getLogger(GroupServlet.class);
-    AbstaractService service = new AbstaractService(LecturerServlet.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String forward="";
-        String action = request.getParameter("action");
-        if (action.equalsIgnoreCase("delete")){
-            int id = Integer.parseInt(request.getParameter("id"));
-            logger.info("Delete lecturer by id" + id);
-			service.delete(id);
-			forward = INSERT_OR_EDIT;
-			request.setAttribute("lecturers", service.getAll());
-        } else if (action.equalsIgnoreCase("find")){
-        	forward = INSERT_OR_EDIT;
-			int id = Integer.parseInt(request.getParameter("id"));
-			logger.info("Find lecturer by id" + id);
-			Lecturer lecturer = (Lecturer) service.findById(id);
-			request.setAttribute("lecturer", lecturer);
-        } else if (action.equalsIgnoreCase("insert")){
-        	forward = LIST_USER;
-			request.setAttribute("lecturers", service.getAll());
-        } else {
-        	 forward = INSERT_OR_EDIT;
-				List<Lecturer> lecturers = service.getAll();
-				request.setAttribute("lecturers", lecturers);
-        }
-        request.getRequestDispatcher(forward).forward(request, response);
+    @Autowired
+	private LecturerService lecturerService;
+
+	@RequestMapping("addLecturer")
+	public ModelAndView addLecturer(@ModelAttribute Lecturer lecturer) {
+		logger.info("Creating lecturer. Data: " + lecturer);
+		return new ModelAndView("lecturerForm");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding ("UTF-8");
-		logger.info("Add new lecturer");
-		Lecturer lecturer = new Lecturer();
-		lecturer.setFirstName(request.getParameter("firstName"));
-		lecturer.setLastName(request.getParameter("lastName"));
-		lecturer.setContactInformation(request.getParameter("contactInformation"));
-		lecturer.setQualification(request.getParameter("qualification"));
-		service.addNew(lecturer);
-
-        RequestDispatcher view = request.getRequestDispatcher(INSERT_OR_EDIT);
-        request.setAttribute("lecturers", service.getAll());
-        view.forward(request, response);
+	@RequestMapping("editLecturer")
+	public ModelAndView editLecturer(@RequestParam Integer id,
+			@ModelAttribute Lecturer lecturer) {
+		logger.info("Updating the lecturer for the Id " + id);
+		lecturer  = lecturerService.findById(id);
+		return new ModelAndView("lecturerForm", "lecturer", lecturer);
 	}
+
+	@RequestMapping("saveLecturer")
+	public ModelAndView Lecturer(@ModelAttribute Lecturer lecturer,
+			@RequestParam(value = "qualification") String qualification) {
+		logger.info("Saving the lecturer. Data : " + lecturer);
+		if (lecturer.getId() == null) {
+			lecturer.setQualification(qualification);
+			lecturerService.addNew(lecturer);
+		} else {
+			lecturer.setQualification(qualification);
+			lecturerService.update(lecturer);
+		}
+		return new ModelAndView("redirect:getAllLecturers");
+	}
+
+	@RequestMapping("deleteLecturer")
+    public ModelAndView deleteLecturer(@RequestParam Integer id) {
+        logger.info("Deleting the lecturer. Id : "+id);
+        Lecturer lecturer = lecturerService.findById(id);
+        lecturerService.delete(lecturer);
+        return new ModelAndView("redirect:getAllLecturers");
+    }
+
+    @RequestMapping(value = {"getAllLecturers", "/"})
+    public ModelAndView getAllLecturers() {
+        logger.info("Getting the all lecturers.");
+        List<Lecturer> lecturers = lecturerService.getAll();
+        return new ModelAndView("lecturerList", "lecturers", lecturers);
+    }
+
+    @RequestMapping("searchLecturer")
+    public ModelAndView searchLecturer(@RequestParam("searchName") String lastName) {
+        logger.info("Searching the lecturer. Lecturer last name: "+lastName);
+        List<Lecturer> lecturers = lecturerService.findLecturerByLastName(lastName);
+        return new ModelAndView("lecturerList", "lecturers", lecturers);
+    }
 
 }

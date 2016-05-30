@@ -1,113 +1,32 @@
 package com.university.dao.impl;
 
-
-import com.university.dao.AbstractJDBCDao;
-import com.university.dao.DaoFactory;
-import com.university.domain.entity.Group;
-import com.university.domain.entity.Student;
-import com.university.exception.DaoException;
-
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDaoImpl extends AbstractJDBCDao<Student, Integer> {
+import org.springframework.beans.factory.annotation.Autowired;
 
-    private class PersistStudent extends Student {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
+import com.university.domain.entity.Student;
+import com.university.exception.DaoException;
+import com.university.util.HibernateUtil;
+import org.springframework.stereotype.Repository;
 
-    @Override
-    public String getSelectQuery() {
-        return "SELECT id, first_name, last_name, contact_information, id_group FROM Student";
-    }
+@Repository
+public class StudentDaoImpl extends GenericDAOImpl<Student, Integer> {
 
-    @Override
-    public String getCreateQuery() {
-        return "INSERT INTO Student (first_name, last_name, contact_information, id_group) \n" +
-                "VALUES (?, ?, ?, ?);";
-    }
+	@Autowired
+    private HibernateUtil hibernateUtil;
 
-    @Override
-    public String getUpdateQuery() {
-        return "UPDATE Student \n" +
-                "SET first_name = ?, last_name  = ?, contact_information = ?, id_group = ? \n" +
-                "WHERE id = ?;";
-    }
 
-    @Override
-    public String getDeleteQuery() {
-        return "DELETE FROM Student WHERE id= ?;";
-    }
+	@Override
+	public Student findByID(Integer id) throws DaoException {
+		return hibernateUtil.fetchById(id,  Student.class);
+	}
 
-    @Override
-    public Student create() throws DaoException {
-        Student student = new Student();
-        return persist(student);
-    }
+	public List<Student> getAllStudentByLastName(String studentLastName) {
+		String query = "SELECT e.* FROM student e WHERE e.name like '%"+ studentLastName +"%'";
+		List<Student> students = hibernateUtil.fetchAll(query);
+		return students;
+	}
 
-    public StudentDaoImpl(DaoFactory<Connection> parentFactory, Connection connection) {
-        super(parentFactory, connection);
-        addRelation(Student.class, "group");
-    }
 
-    @Override
-    protected List<Student> parseResultSet(ResultSet rs) throws DaoException {
-        LinkedList<Student> result = new LinkedList<Student>();
-        try {
-            while (rs.next()) {
-                PersistStudent student = new PersistStudent();
-                student.setId(rs.getInt("id"));
-                student.setFirstName(rs.getString("first_name"));
-                student.setLastName(rs.getString("last_name"));
-                student.setContactInformation(rs.getString("contact_information"));
-                student.setGroup((Group) getDependence(Group.class, rs.getInt("id_group")));
-                result.add(student);
-            }
-        } catch (Exception e) {
-            throw new DaoException(e);
-        }
-        return result;
-    }
-
-    @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Student student) throws DaoException {
-        try {
-            int groupId = (student.getGroup() == null || student.getGroup().getId() == null) ? -1
-                    : student.getGroup().getId();
-            statement.setString(1, student.getFirstName());
-            statement.setString(2, student.getLastName());
-            statement.setString(3, student.getContactInformation());
-            statement.setInt(4, groupId);
-            statement.setInt(5, student.getId());
-        } catch (Exception e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Student student) throws DaoException {
-        try {
-            int groupId = (student.getGroup() == null || student.getGroup().getId() == null) ? -1
-                    : student.getGroup().getId();
-            statement.setString(1, student.getFirstName());
-            statement.setString(2, student.getLastName());
-            statement.setString(3, student.getContactInformation());
-            statement.setInt(4, groupId);
-        } catch (Exception e) {
-            throw new DaoException(e);
-        }
-    }
-
-    protected Date convert(java.util.Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new Date(date.getTime());
-    }
 }

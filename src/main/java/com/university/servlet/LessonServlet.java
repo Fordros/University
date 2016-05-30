@@ -1,102 +1,124 @@
 package com.university.servlet;
 
-import java.io.IOException;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+
+
+
+import com.university.domain.service.ClassroomService;
+import com.university.domain.service.GroupService;
+import com.university.domain.service.LecturerService;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.university.domain.entity.Classroom;
-import com.university.domain.entity.Group;
-import com.university.domain.entity.Lecturer;
 import com.university.domain.entity.Lesson;
-import com.university.domain.entity.Student;
-import com.university.domain.service.AbstaractService;
+import com.university.domain.service.LessonService;
 
-@WebServlet("/lesson")
-public class LessonServlet extends HttpServlet{
-	private static final long serialVersionUID = 1L;
-	private static String INSERT_OR_EDIT = "/lesson.jsp";
-    private static String LIST_USER = "/addLesson.jsp";
+
+
+@Controller
+public class LessonServlet{
+
     final static Logger logger = Logger.getLogger(LessonServlet.class);
-    
-    AbstaractService lessonService = new AbstaractService(Lesson.class);
-    AbstaractService studentService = new AbstaractService(Student.class);
-	AbstaractService groupService = new AbstaractService(Group.class);
-	AbstaractService classroomService = new AbstaractService(Classroom.class);
-	AbstaractService lecturerService = new AbstaractService(Lecturer.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String forward="";
-        String action = request.getParameter("action");
+    @Autowired
+	private LessonService lessonService;
+	@Autowired
+	private GroupService groupService;
+	@Autowired
+	private LecturerService lecturerService;
+	@Autowired
+	private ClassroomService classroomService;
 
-        if (action.equalsIgnoreCase("delete")){
-            int id = Integer.parseInt(request.getParameter("id"));
-            logger.info("Delete lesson by id" + id);
-			lessonService.delete(id);
-			forward = INSERT_OR_EDIT;
-			request.setAttribute("lessons", lessonService.getAll());
-        } else if (action.equalsIgnoreCase("find")){
-        	forward = "timetable.jsp";
-			int candidate = Integer.parseInt(request.getParameter("for"));
-			if(candidate == 1){
-				request.setAttribute("lecturers", lecturerService.getAll());
-				request.setAttribute("name", candidate);
-			}else{
-				request.setAttribute("groups", groupService.getAll());
-				request.setAttribute("name", candidate);
-			}
-        } else if (action.equalsIgnoreCase("insert")){
-        	forward = LIST_USER;
-			request.setAttribute("groups", groupService.getAll());
-			request.setAttribute("lecturers", lecturerService.getAll());
-			request.setAttribute("classrooms", classroomService.getAll());
-        } else {
-        	 forward = INSERT_OR_EDIT;
-			List<Lesson> lessons = lessonService.getAll();
-			request.setAttribute("lessons", lessons);
-        }
-        request.getRequestDispatcher(forward).forward(request, response);
+	@RequestMapping("addLesson")
+	public ModelAndView addLesson(@ModelAttribute Lesson lesson) {
+		logger.info("Creating lesson. Data: " + lesson);
+		ModelAndView mav = new ModelAndView("lessonForm");
+
+		mav.addObject("groups",groupService.getAll());
+		mav.addObject("lecturers",lecturerService.getAll());
+		mav.addObject("classrooms",classroomService.getAll());
+
+		return mav;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding ("UTF-8");
-		logger.info("Add new lesson");
-		Lesson lesson = new Lesson();
-		String[] optionGroup = request.getParameterValues("optionGroup");
-		Group group = (Group) groupService.findById(Integer.parseInt(optionGroup[0]));
+	@RequestMapping("editLesson")
+	public ModelAndView editLesson(@RequestParam Integer id,
+			@ModelAttribute Lesson lesson) {
+		logger.info("Updating the lesson for the Id " + id);
+		ModelAndView mav = new ModelAndView("lessonForm");
 
-		String[] optionLecturer = request.getParameterValues("optionLecturer");
-		Lecturer lecturer = (Lecturer) lecturerService.findById(Integer.parseInt(optionLecturer[0]));
+		mav.addObject("groups",groupService.getAll());
+		mav.addObject("lecturers",lecturerService.getAll());
+		mav.addObject("classrooms",classroomService.getAll());
+		lesson  = lessonService.findById(id);
+        mav.addObject("lesson", lesson);
+		return mav;
+	}
 
-		String[] optionClassroom = request.getParameterValues("optionClassroom");
-		Classroom classroom = (Classroom) classroomService.findById(Integer.parseInt(optionClassroom[0]));
+	@RequestMapping("saveLesson")
+	public ModelAndView saveLesson(@ModelAttribute Lesson lesson,
+                                   @RequestParam(value = "optionGroup") int optionGroup,
+                                   @RequestParam(value = "optionLecturer") int optionLecturer,
+                                   @RequestParam(value = "optionClassroom") int optionClassroom,
+                                   @RequestParam(value = "studiesType") String studiesType
+                                   ) {
+		logger.info("Saving the lesson. Data : " + lesson);
+		if (lesson.getId() == null) {
+			lesson.setGroup(groupService.findById(optionGroup));
+			lesson.setClassroom(classroomService.findById(optionClassroom));
+			lesson.setLecturer(lecturerService.findById(optionLecturer));
+			lesson.setStudiesTypes(studiesType);
 
-		lesson.setGroup(group);
-		lesson.setLecturer(lecturer);
-		lesson.setClassroom(classroom);
-		lesson.setStudiesTypes(request.getParameter("studiesType"));
+            lessonService.addNew(lesson);
+		} else {
+			lesson.setGroup(groupService.findById(optionGroup));
+			lesson.setClassroom(classroomService.findById(optionClassroom));
+			lesson.setLecturer(lecturerService.findById(optionLecturer));
+			lesson.setStudiesTypes(studiesType);
 
-		try {
-			String lessonTimeString = request.getParameter("lessonTime");
-		    Date lessonTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(lessonTimeString);
-
-		    lesson.setLessonTime(lessonTime);
-		} catch (ParseException e) {
-			logger.error("Error to parse lessontime", e);
+			lessonService.update(lesson);
 		}
-		lessonService.addNew(lesson);
-		List<Lesson> lessons = lessonService.getAll();
-		request.setAttribute("lessons", lessons);
-        request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
+		return new ModelAndView("redirect:getAllLessons");
 	}
+
+	@RequestMapping("deleteLesson")
+    public ModelAndView deleteLesson(@RequestParam Integer id) {
+        logger.info("Deleting the lesson. Id : "+id);
+        Lesson lesson = lessonService.findById(id);
+        lessonService.delete(lesson);
+        return new ModelAndView("redirect:getAllLessons");
+    }
+
+    @RequestMapping(value = {"getAllLessons", "/"})
+    public ModelAndView getAllLessons() {
+        logger.info("Getting the all lessons.");
+        List<Lesson> lessons = lessonService.getAll();
+        return new ModelAndView("lessonList", "lessons", lessons);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(
+                dateFormat, true));
+    }
+
+
+
 }
